@@ -2,8 +2,8 @@ import argparse
 import ipaddress
 import json
 
-from ripe.stat import announced_prefixes
-from ripe.stat import rpki_validation_status
+from rsaw import announced_prefixes
+from rsaw import rpki_validation_status
 
 
 def args():
