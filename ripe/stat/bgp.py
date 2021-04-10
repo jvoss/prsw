@@ -55,7 +55,6 @@ class AnnouncedPrefixes:
             else:
                 raise ValueError("min_peers_seeing expected to be int")
 
-        # super().__init__(**get(AnnouncedPrefixes.PATH, params))
         self._api = get(AnnouncedPrefixes.PATH, params)
 
     def __iter__(self):
@@ -69,6 +68,9 @@ class AnnouncedPrefixes:
         return len(self.prefixes())
 
     def prefixes(self):
+        """
+        A list of all announced prefixes + the timelines when they were visible.
+        """
         prefixes = []
 
         for prefix in self._api.data["prefixes"]:
@@ -86,18 +88,18 @@ class AnnouncedPrefixes:
 
 class RPKIValidationStatus:
     """
-    This data call returns the RPKI validity state for a combination of prefix 
-    and Autonomous System. This combination will be used to perform the lookup 
-    against the RIPE NCC's RPKI Validator, and then return its RPKI validity 
+    This data call returns the RPKI validity state for a combination of prefix
+    and Autonomous System. This combination will be used to perform the lookup
+    against the RIPE NCC's RPKI Validator, and then return its RPKI validity
     state.
 
     Arguments:
         resource {str} -- The ASN used to perform the RPKI validity state lookup.
         prefix {str}   -- The prefix to perform the RPKI validity state lookup. Note
                         the prefix's length is also taken from this field.
-    
+
     Returns:
-        RPKIValidationStatus {obj} -- An interable object of announced prefixes
+        RPKIValidationStatus {obj} --
     """
 
     PATH = "/rpki-validation/"
@@ -107,12 +109,57 @@ class RPKIValidationStatus:
         resource,
         prefix: ipaddress,
     ):
-        try:
-            ipaddress.ip_network(resource, strict=False)
-        except:
-            ValueError("Invalid IPv4 or IPv6 prefix")
+        # validate prefix)
+        ipaddress.ip_network(prefix, strict=False)
 
-        params = 'resource=' + str(resource) + '&prefix=' + str(prefix)
-        # super().__init__(**get(RPKIValidationStatus.PATH, params))
+        params = "resource=" + str(resource) + "&prefix=" + str(prefix)
         self._api = get(RPKIValidationStatus.PATH, params)
 
+    def prefix(self):
+        """
+        The prefix this query is based on.
+        """
+
+        return ipaddress.ip_network(self._api.data["prefix"], strict=False)
+
+    def resource(self):
+        """
+        The resource (ASN) this query is based on.
+        """
+        return self._api.data["resource"]
+
+    def status(self):
+        """
+        The RPKI validity state, according to RIPE NCC's RPKI validator. Possible
+        states are:
+
+        Returns:
+            "valid"             - the announcement matches a roa and is valid
+
+            "invalid_asn"       - there is a roa with the same (or covering)
+                                  prefix, but a different ASN
+
+            "invalid_length"    - the announcement's prefix length is greater
+                                  than the ROA's maximum length
+
+            "unknown"           - no ROA found for the announcement
+        """
+
+        return self._api.data["status"]
+
+    def validating_roas(self):
+        roas = []
+
+        for roa in self._api.data["validating_roas"]:
+            r_dict = {}
+
+            # repack API response with ipaddress object
+            for k, v in roa.items():
+                if k == "prefix":
+                    v = ipaddress.ip_network(roa["prefix"], strict=False)
+
+                r_dict[k] = v
+
+            roas.append(r_dict)
+
+        return roas

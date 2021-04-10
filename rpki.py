@@ -45,8 +45,8 @@ def main():
 
     for prefix in prefixes:
         resp = rpki_validation_status(cli.asn, prefix)
-        status = resp._api.data["status"]
-        roas = resp._api.data["validating_roas"]
+        status = resp.status()
+        roas = resp.validating_roas()
 
         print()
         print("=" * 80)
@@ -70,7 +70,7 @@ def main():
                     fmt.format(
                         line,
                         roa["origin"],
-                        roa["prefix"],
+                        str(roa["prefix"]),
                         roa["max_length"],
                         roa["validity"],
                         roa["source"],
