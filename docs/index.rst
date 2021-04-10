@@ -20,8 +20,8 @@ Documentation is organized into the following sections:
     :maxdepth: 1
     :caption: API Methods
 
-    methods/announced_prefixes
-    methods/rpki_validation_status
+    api_methods/announced_prefixes
+    api_methods/rpki_validation_status
 
 .. _tutorial:
 
