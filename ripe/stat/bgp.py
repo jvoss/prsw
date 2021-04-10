@@ -1,10 +1,7 @@
 import datetime
 
-from collections import namedtuple
 from typing import Optional
-from ._common import _get
-
-from ripe import Output
+from .api import get
 
 
 def announced_prefixes(
@@ -34,7 +31,7 @@ def announced_prefixes(
     Returns:
         AnnouncedPrefixes --
     """
-    url = "/announced-prefixes/"
+    path = "/announced-prefixes/"
     params = "resource=" + str(resource)
 
     if starttime:
@@ -53,5 +50,49 @@ def announced_prefixes(
         else:
             raise ValueError("min_peers_seeing expected to be int")
 
-    
-    return _get(url, params)
+    return get(path, params)
+
+
+def looking_glass(resource):
+  """
+  This data call returns information commonly coming from a Looking Glass. The 
+  data is based on a data feed from the RIPE NCC's network of BGP route 
+  collectors (RIS, see https://www.ripe.net/data-tools/stats/ris for more 
+  information). The data processing usually happens with a small delay and can 
+  be considered near real-time. The output is structured by collector node (RRC)
+  accompanied by the location and the BGP peers which provide the routing 
+  information. 
+
+  Arguments:
+    resource {str} -- A prefix or an IP address.
+
+  Returns:
+    Dict[rrcs] -- 
+  """
+
+  path   = '/looking-glass/'
+  params = 'resource=' + str(resource) 
+
+  return get(path, params)
+
+
+def rpki_validation(resource, prefix):
+  """
+  This data call returns the RPKI validity state for a combination of prefix 
+  and Autonomous System. This combination will be used to perform the lookup 
+  against the RIPE NCC's RPKI Validator, and then return its RPKI validity 
+  state.
+
+  Arguments:
+    resource {str} -- The ASN used to perform the RPKI validity state lookup.
+    prefix {str}   -- The prefix to perform the RPKI validity state lookup. Note
+                      the prefix's length is also taken from this field.
+  
+  Returns:
+    Dict
+  """
+
+  path   = '/rpki-validation/'
+  params = 'resource=' + str(resource) + '&prefix=' + str(prefix)
+
+  return get(path, params)
