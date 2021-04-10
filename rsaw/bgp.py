@@ -43,6 +43,7 @@ class AnnouncedPrefixes:
             visibility/localized announcements. (default 10)
         """
 
+        params = "preferred_version=1.2&"  # specific endpoint version
         params = "resource=" + str(resource)
 
         if starttime:
@@ -96,11 +97,11 @@ class AnnouncedPrefixes:
         return len(self.prefixes())
 
     def earliest_time(self):
-        """Earliest `datetime` a prefix was observed."""
+        """Earliest `datetime` data is available for."""
         return datetime.fromisoformat(self._api.data["earliest_time"])
 
     def latest_time(self):
-        """Latest `datetime` a prefix was observed."""
+        """Latest `datetime` data is available for."""
         return datetime.fromisoformat(self._api.data["latest_time"])
 
     def prefixes(self):
@@ -130,7 +131,7 @@ class AnnouncedPrefixes:
         return datetime.fromisoformat(self._api.data["query_starttime"])
 
     def resource(self):
-        """The resource queried."""
+        """The resource used for the query."""
         return self._api.data["resource"]
 
 
@@ -141,13 +142,17 @@ class RPKIValidationStatus:
     against the RIPE NCC's RPKI Validator, and then return its RPKI validity
     state.
 
-    Arguments:
-        resource {str} -- The ASN used to perform the RPKI validity state lookup.
-        prefix {str}   -- The prefix to perform the RPKI validity state lookup. Note
-                        the prefix's length is also taken from this field.
+    Reference: `<https://stat.ripe.net/docs/data_api#rpki-validation>`_
 
-    Returns:
-        RPKIValidationStatus {obj} --
+    .. code-block:: python
+
+        import rsaw
+
+        result = rsaw.rpki_validation_status(3333, '193.0.0.0/21')
+        print(result.status)
+
+        for roa in result.validating_roas():
+            print(roa['origin'], roa['prefix'], roa['validity'], roa['source'])
     """
 
     PATH = "/rpki-validation/"
@@ -155,24 +160,29 @@ class RPKIValidationStatus:
     def __init__(
         self,
         resource,
-        prefix: ipaddress,
+        prefix: ipaddress.ip_network,
     ):
-        # validate prefix)
-        ipaddress.ip_network(prefix, strict=False)
+        """Initialize and request RPKIValidationStatus
 
-        params = "resource=" + str(resource) + "&prefix=" + str(prefix)
+        :param resource: The ASN used to perform the RPKI validity state lookup.
+        :param prefix: The prefix to perform the RPKI validity state lookup.
+            Note the prefix's length is also taken from this field.
+        """
+
+        # validate and sanitize prefix (ensure is proper boundary)
+        prefix = ipaddress.ip_network(prefix, strict=False)
+
+        params = "preferred_version=0.2&"  # specific endpoint version
+        params += "resource=" + str(resource) + "&prefix=" + str(prefix)
+
         self._api = get(RPKIValidationStatus.PATH, params)
 
     def prefix(self):
-        """
-        The prefix this query is based on.
-        """
+        """The prefix this query is based on."""
         return ipaddress.ip_network(self._api.data["prefix"], strict=False)
 
     def resource(self):
-        """
-        The resource (ASN) this query is based on.
-        """
+        """The resource (ASN) this query is based on."""
         return self._api.data["resource"]
 
     def status(self):
@@ -180,16 +190,15 @@ class RPKIValidationStatus:
         The RPKI validity state, according to RIPE NCC's RPKI validator. Possible
         states are:
 
-        Returns:
-            "valid"             - the announcement matches a roa and is valid
+        `"valid"` the announcement matches a roa and is valid
 
-            "invalid_asn"       - there is a roa with the same (or covering)
-                                  prefix, but a different ASN
+        `"invalid_asn"` there is a roa with the same (or covering)
+        prefix, but a different ASN
 
-            "invalid_length"    - the announcement's prefix length is greater
-                                  than the ROA's maximum length
+        `"invalid_length"` the announcement's prefix length is greater
+        than the ROA's maximum length
 
-            "unknown"           - no ROA found for the announcement
+        `"unknown"` no ROA found for the announcement
         """
         return self._api.data["status"]
 

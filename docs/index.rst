@@ -21,6 +21,7 @@ Documentation is organized into the following sections:
     :caption: API Methods
 
     methods/announced_prefixes
+    methods/rpki_validation_status
 
 .. _tutorial:
 
