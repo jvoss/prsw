@@ -41,5 +41,5 @@ def get(path, params):
     url = API_URL + str(path) + "data.json?" + str(params)
     r = requests.get(url)
 
-    return r.json()
+    return Output(**r.json())
 

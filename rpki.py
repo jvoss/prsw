@@ -45,8 +45,8 @@ def main():
 
     for prefix in prefixes:
         resp = rpki_validation_status(cli.asn, prefix)
-        status = resp.data["status"]
-        roas = resp.data["validating_roas"]
+        status = resp._api.data["status"]
+        roas = resp._api.data["validating_roas"]
 
         print()
         print("=" * 80)

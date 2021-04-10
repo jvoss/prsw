@@ -1,11 +1,11 @@
 import ipaddress
 
-from .api import get, Output
+from .api import get
 from datetime import datetime
 from typing import Optional
 
 
-class AnnouncedPrefixes(Output):
+class AnnouncedPrefixes:
     """
     This data call returns all announced prefixes for a given ASN. The results
     can be restricted to a specific time period.
@@ -55,7 +55,8 @@ class AnnouncedPrefixes(Output):
             else:
                 raise ValueError("min_peers_seeing expected to be int")
 
-        super().__init__(**get(AnnouncedPrefixes.PATH, params))
+        # super().__init__(**get(AnnouncedPrefixes.PATH, params))
+        self._api = get(AnnouncedPrefixes.PATH, params)
 
     def __iter__(self):
         for prefix in self.prefixes():
@@ -70,7 +71,7 @@ class AnnouncedPrefixes(Output):
     def prefixes(self):
         prefixes = []
 
-        for prefix in self.data["prefixes"]:
+        for prefix in self._api.data["prefixes"]:
             ip_network = ipaddress.ip_network(prefix["prefix"], strict=False)
             timelines = []
 
@@ -83,7 +84,7 @@ class AnnouncedPrefixes(Output):
         return prefixes
 
 
-class RPKIValidationStatus(Output):
+class RPKIValidationStatus:
     """
     This data call returns the RPKI validity state for a combination of prefix 
     and Autonomous System. This combination will be used to perform the lookup 
@@ -112,4 +113,6 @@ class RPKIValidationStatus(Output):
             ValueError("Invalid IPv4 or IPv6 prefix")
 
         params = 'resource=' + str(resource) + '&prefix=' + str(prefix)
-        super().__init__(**get(RPKIValidationStatus.PATH, params))
+        # super().__init__(**get(RPKIValidationStatus.PATH, params))
+        self._api = get(RPKIValidationStatus.PATH, params)
+
