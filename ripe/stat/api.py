@@ -36,9 +36,10 @@ class Output:
         self.status_code = int(status_code)
         self.time = datetime.datetime.fromisoformat(time)
 
+
 def get(path, params):
     url = API_URL + str(path) + "data.json?" + str(params)
     r = requests.get(url)
 
-    return Output(**r.json())
+    return r.json()
 

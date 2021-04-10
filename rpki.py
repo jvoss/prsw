@@ -3,7 +3,7 @@ import ipaddress
 import json
 
 from ripe.stat import announced_prefixes
-from ripe.stat import rpki_validation
+from ripe.stat import rpki_validation_status
 
 
 def args():
@@ -33,29 +33,18 @@ def args():
     return args
 
 
-def get_prefixes(asn):
-    prefixes = []
-
-    resp = announced_prefixes(asn)
-
-    for prefix in resp.data["prefixes"]:
-        prefixes.append(ipaddress.ip_network(prefix["prefix"]))
-
-    return prefixes
-
-
 def main():
     # Parse arguments
     cli = args()
 
     # Pull all prefixes for an ASN if needed
     if not cli.prefix:
-        prefixes = get_prefixes(cli.asn)
+        prefixes = announced_prefixes(cli.asn)
     else:
         prefixes = cli.prefix
 
     for prefix in prefixes:
-        resp = rpki_validation(cli.asn, prefix)
+        resp = rpki_validation_status(cli.asn, prefix)
         status = resp.data["status"]
         roas = resp.data["validating_roas"]
 

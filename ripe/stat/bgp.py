@@ -1,15 +1,11 @@
-import datetime
+import ipaddress
 
+from .api import get, Output
+from datetime import datetime
 from typing import Optional
-from .api import get
 
 
-def announced_prefixes(
-    resource,
-    starttime: Optional[datetime.datetime] = None,
-    endtime: Optional[datetime.datetime] = None,
-    min_peers_seeing=None,
-):
+class AnnouncedPrefixes(Output):
     """
     This data call returns all announced prefixes for a given ASN. The results
     can be restricted to a specific time period.
@@ -29,70 +25,91 @@ def announced_prefixes(
                                   visibility/localized announcements. (default 10)
 
     Returns:
-        AnnouncedPrefixes --
+        AnnouncedPrefixes {obj} -- An interable object of announced prefixes
     """
-    path = "/announced-prefixes/"
-    params = "resource=" + str(resource)
 
-    if starttime:
-        if isinstance(starttime, datetime.datetime):
-            params += "&starttime=" + str(starttime)
-        else:
-            raise ValueError("starttime expected to be datetime")
-    if endtime:
-        if isinstance(endtime, datetime.datetime):
-            params += "&endtime=" + str(endtime)
-        else:
-            raise ValueError("endtime expected to be datetime")
-    if min_peers_seeing:
-        if isinstance(min_peers_seeing, int):
-            params += "&min_peers_seeing=" + str(min_peers_seeing)
-        else:
-            raise ValueError("min_peers_seeing expected to be int")
+    PATH = "/announced-prefixes/"
 
-    return get(path, params)
+    def __init__(
+        self,
+        resource,
+        starttime: Optional[datetime] = None,
+        endtime: Optional[datetime] = None,
+        min_peers_seeing=None,
+    ):
+        params = "resource=" + str(resource)
+
+        if starttime:
+            if isinstance(starttime, datetime.datetime):
+                params += "&starttime=" + str(starttime)
+            else:
+                raise ValueError("starttime expected to be datetime")
+        if endtime:
+            if isinstance(endtime, datetime.datetime):
+                params += "&endtime=" + str(endtime)
+            else:
+                raise ValueError("endtime expected to be datetime")
+        if min_peers_seeing:
+            if isinstance(min_peers_seeing, int):
+                params += "&min_peers_seeing=" + str(min_peers_seeing)
+            else:
+                raise ValueError("min_peers_seeing expected to be int")
+
+        super().__init__(**get(AnnouncedPrefixes.PATH, params))
+
+    def __iter__(self):
+        for prefix in self.prefixes():
+            yield prefix
+
+    def __getitem__(self, index):
+        return self.prefixes()[index]
+
+    def __len__(self):
+        return len(self.prefixes())
+
+    def prefixes(self):
+        prefixes = []
+
+        for prefix in self.data["prefixes"]:
+            ip_network = ipaddress.ip_network(prefix["prefix"], strict=False)
+            timelines = []
+
+            for timeline in prefix["timelines"]:
+                for key, time in timeline.items():
+                    timelines.append({key: datetime.fromisoformat(time)})
+
+            prefixes.append({"prefix": ip_network, "timelines": timelines})
+
+        return prefixes
 
 
-def looking_glass(resource):
-  """
-  This data call returns information commonly coming from a Looking Glass. The 
-  data is based on a data feed from the RIPE NCC's network of BGP route 
-  collectors (RIS, see https://www.ripe.net/data-tools/stats/ris for more 
-  information). The data processing usually happens with a small delay and can 
-  be considered near real-time. The output is structured by collector node (RRC)
-  accompanied by the location and the BGP peers which provide the routing 
-  information. 
+class RPKIValidationStatus(Output):
+    """
+    This data call returns the RPKI validity state for a combination of prefix 
+    and Autonomous System. This combination will be used to perform the lookup 
+    against the RIPE NCC's RPKI Validator, and then return its RPKI validity 
+    state.
 
-  Arguments:
-    resource {str} -- A prefix or an IP address.
+    Arguments:
+        resource {str} -- The ASN used to perform the RPKI validity state lookup.
+        prefix {str}   -- The prefix to perform the RPKI validity state lookup. Note
+                        the prefix's length is also taken from this field.
+    
+    Returns:
+        RPKIValidationStatus {obj} -- An interable object of announced prefixes
+    """
 
-  Returns:
-    Dict[rrcs] -- 
-  """
+    PATH = "/rpki-validation/"
 
-  path   = '/looking-glass/'
-  params = 'resource=' + str(resource) 
+    def __init__(
+        self,
+        resource,
+        prefix: ipaddress,
+    ):
+        try:
+            ipaddress.ip_network(resource, strict=False)
+        except:
+            ValueError("Invalid IPv4 or IPv6 prefix")
 
-  return get(path, params)
-
-
-def rpki_validation(resource, prefix):
-  """
-  This data call returns the RPKI validity state for a combination of prefix 
-  and Autonomous System. This combination will be used to perform the lookup 
-  against the RIPE NCC's RPKI Validator, and then return its RPKI validity 
-  state.
-
-  Arguments:
-    resource {str} -- The ASN used to perform the RPKI validity state lookup.
-    prefix {str}   -- The prefix to perform the RPKI validity state lookup. Note
-                      the prefix's length is also taken from this field.
-  
-  Returns:
-    Dict
-  """
-
-  path   = '/rpki-validation/'
-  params = 'resource=' + str(resource) + '&prefix=' + str(prefix)
-
-  return get(path, params)
+        params = 'resource=' + str(resource) + '&prefix=' + str(prefix)
+        super().__init__(**get(RPKIValidationStatus.PATH, params))
