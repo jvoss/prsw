@@ -119,7 +119,6 @@ class RPKIValidationStatus:
         """
         The prefix this query is based on.
         """
-
         return ipaddress.ip_network(self._api.data["prefix"], strict=False)
 
     def resource(self):
@@ -144,7 +143,6 @@ class RPKIValidationStatus:
 
             "unknown"           - no ROA found for the announcement
         """
-
         return self._api.data["status"]
 
     def validating_roas(self):
