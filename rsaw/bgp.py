@@ -1,8 +1,10 @@
 import ipaddress
 
-from .api import get
+from collections import namedtuple
 from datetime import datetime
 from typing import Optional
+
+from .api import get
 
 
 class AnnouncedPrefixes:
@@ -18,12 +20,13 @@ class AnnouncedPrefixes:
 
         prefixes = rsaw.announced_prefixes(3333)
 
-        for prefix in prefixes:
-            print(prefix)
+        for network in prefixes:
+            print(network.prefix, network.timelines)
 
     """
 
     PATH = "/announced-prefixes/"
+    VERSION = "1.2"
 
     def __init__(
         self,
@@ -43,8 +46,8 @@ class AnnouncedPrefixes:
             visibility/localized announcements. (default 10)
         """
 
-        params = "preferred_version=1.2&"  # specific endpoint version
-        params = "resource=" + str(resource)
+        params = f"preferred_version={AnnouncedPrefixes.VERSION}&"
+        params += "resource=" + str(resource)
 
         if starttime:
             if isinstance(starttime, datetime.datetime):
@@ -72,8 +75,8 @@ class AnnouncedPrefixes:
         .. code-block:: python
 
             prefixes = rsaw.announced_prefixes(3333)
-            for prefix in prefixes:
-                print(prefix['prefix'], prefix['timelines'])
+            for announced_prefix in prefixes:
+                print(announced_prefix.prefix, announced_prefix.timelines)
 
         """
 
@@ -109,6 +112,7 @@ class AnnouncedPrefixes:
         A list of all announced prefixes + the timelines when they were visible.
         """
         prefixes = []
+        AnnouncedPrefix = namedtuple("AnnouncedPrefix", ["prefix", "timelines"])
 
         for prefix in self._api.data["prefixes"]:
             ip_network = ipaddress.ip_network(prefix["prefix"], strict=False)
@@ -118,7 +122,8 @@ class AnnouncedPrefixes:
                 for key, time in timeline.items():
                     timelines.append({key: datetime.fromisoformat(time)})
 
-            prefixes.append({"prefix": ip_network, "timelines": timelines})
+            tuple_data = {"prefix": ip_network, "timelines": timelines}
+            prefixes.append(AnnouncedPrefix(**tuple_data))
 
         return prefixes
 
@@ -152,10 +157,11 @@ class RPKIValidationStatus:
         print(result.status)
 
         for roa in result.validating_roas():
-            print(roa['origin'], roa['prefix'], roa['validity'], roa['source'])
+            print(roa.origin, roa.prefix, roa.validity, roa.source)
     """
 
     PATH = "/rpki-validation/"
+    VERSION = "0.2"
 
     def __init__(
         self,
@@ -172,7 +178,7 @@ class RPKIValidationStatus:
         # validate and sanitize prefix (ensure is proper boundary)
         prefix = ipaddress.ip_network(prefix, strict=False)
 
-        params = "preferred_version=0.2&"  # specific endpoint version
+        params = f"preferred_version={RPKIValidationStatus.VERSION}&"
         params += "resource=" + str(resource) + "&prefix=" + str(prefix)
 
         self._api = get(RPKIValidationStatus.PATH, params)
@@ -203,18 +209,23 @@ class RPKIValidationStatus:
         return self._api.data["status"]
 
     def validating_roas(self):
+        """A list of validating ROAs"""
         roas = []
+        ROA = namedtuple(
+            "ROA", ["origin", "prefix", "validity", "source", "max_length"]
+        )
 
         for roa in self._api.data["validating_roas"]:
-            r_dict = {}
+            roa_dict = {}
 
             # repack API response with ipaddress object
             for k, v in roa.items():
                 if k == "prefix":
                     v = ipaddress.ip_network(roa["prefix"], strict=False)
 
-                r_dict[k] = v
+                roa_dict[k] = v
 
-            roas.append(r_dict)
+            roas.append(ROA(**roa_dict))
+            # roas.append(r_dict)
 
         return roas
