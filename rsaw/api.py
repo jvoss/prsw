@@ -17,6 +17,7 @@ class ResponseError(Exception):
 class Output:
     def __init__(
         self,
+        _url,
         messages: Optional[list] = [],
         see_also: Optional[list] = [],
         version: Optional[str] = "",
@@ -31,6 +32,7 @@ class Output:
         status_code: Optional[int] = 0,
         time: Optional[str] = "",
     ):
+        self._url = _url
 
         if status_code is 200:
             self.messages = messages
@@ -56,6 +58,6 @@ def get(path, params):
     try:
         response = requests.get(url)
         response.raise_for_status()
-        return Output(**response.json())
+        return Output(url, **response.json())
     except Exception as e:
         raise RequestError(e)
