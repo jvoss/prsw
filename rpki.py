@@ -69,11 +69,11 @@ def main():
                 print(
                     fmt.format(
                         line,
-                        roa["origin"],
-                        str(roa["prefix"]),
-                        roa["max_length"],
-                        roa["validity"],
-                        roa["source"],
+                        roa.origin,
+                        str(roa.prefix),
+                        roa.max_length,
+                        roa.validity,
+                        roa.source,
                     )
                 )
                 line += 1

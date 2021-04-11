@@ -1,27 +1,8 @@
 import argparse
 import ipaddress
 
-from json import JSONEncoder
-from ripe.stat import announced_prefixes
-from ripe.stat import looking_glass
-
-
-class BGPPrefix:
-    def __init__(self, **kwargs):
-        self.asn_origin = kwargs["asn_origin"]
-        self.as_path = kwargs["as_path"]
-        self.community = kwargs["community"]
-        self.last_updated = kwargs["last_updated"]
-        self.prefix = kwargs["prefix"]
-        self.peer = kwargs["peer"]
-        self.origin = kwargs["origin"]
-        self.next_hop = kwargs["next_hop"]
-        self.latest_time = kwargs["latest_time"]
-
-
-class BGPEncoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__
+from rsaw import announced_prefixes
+from rsaw import looking_glass
 
 
 def args():
@@ -54,34 +35,6 @@ def args():
     return args
 
 
-def get_prefixes(asn):
-    prefixes = []
-
-    resp = announced_prefixes(asn)
-
-    for prefix in resp.data["prefixes"]:
-        prefixes.append(ipaddress.ip_network(prefix["prefix"]))
-
-    return prefixes
-
-
-def get_paths(prefix):
-    locations = {}
-
-    resp = looking_glass(prefix)
-
-    for rrcs in resp.data["rrcs"]:
-        location = rrcs["location"]
-
-        locations[rrcs["location"]] = {}
-        locations[rrcs["location"]]["peers"] = []
-
-        for peer in rrcs["peers"]:
-            locations[location]["peers"].append(BGPPrefix(**peer))
-
-    return locations
-
-
 def main():
     # Parse arguments
     cli = args()
@@ -90,35 +43,37 @@ def main():
     prefixes = []
 
     if not cli.prefix:
-        prefixes = get_prefixes(cli.asn)
+        prefixes = announced_prefixes(cli.asn)
     else:
         prefixes = cli.prefix
 
     # Get paths for each prefixes
     for prefix in prefixes:
-        paths[str(prefix)] = get_paths(prefix)
+        paths[str(prefix)] = looking_glass(prefix)
 
     # Write baseline file for prefixes
     # with open('baseline.json', 'w') as file:
     #   file.write(BGPEncoder().encode(paths))
 
     # Print report for all prefixes
-    for prefix, route_server in paths.items():
+    for prefix, collectors in paths.items():
         print()
         print("=" * 80)
         print(prefix)
         print("=" * 80)
         print()
 
-        for location, peers in route_server.items():
+        for collector in collectors:
             line = 0
 
-            print("Route Server: " + location)
+            print("Route Server: " + collector.location)
             fmt = "{:<4} {:<30} {}"
             print(fmt.format("#", "Router ID", "AS PATH"))
             print("-" * 80)
-            for peer in peers["peers"]:
-                print(fmt.format(line, peer.peer, peer.as_path))
+            for peer in collector.peers:
+                print(
+                    fmt.format(line, str(peer.peer), " ".join(map(str, peer.as_path)))
+                )
                 line += 1
 
             print()
