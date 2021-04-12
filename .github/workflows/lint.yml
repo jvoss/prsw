@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint-multi-os:
-    name: Lint ${{ matrix.os }}
+    name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -23,10 +23,6 @@ jobs:
       run: black --check --verbose --exclude docs .
     - name: Run flake8
       run: flake8 --exclude docs
-    # - name: Run flynt
-    #   run: flynt -vdf -tc -ll 1000 .
-    # - name: Run isort
-    #   run: isort -cv .
     - name: Run pydocstyle
       run: pydocstyle rsaw
     - name: Run sphinx
