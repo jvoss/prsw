@@ -1,7 +1,7 @@
 """
 RIPEStat API Wrapper.
 
-RSAW, the RIPEStat API Wrapper, is a python package that allows for 
+RSAW, the RIPEStat API Wrapper, is a python package that allows for
 pythonic interaction with the RIPEStat public API.
 
 More RIPEStat API information is available at:
