@@ -3,7 +3,7 @@
 import re
 from os import path
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 PACKAGE_NAME = "rsaw"
 PATH = path.abspath(path.dirname(__file__))
@@ -23,7 +23,7 @@ extras = {
     ],
     "readthedocs": ["sphinx"],
 }
-extras["dev"] += extras["lint"] + extras["test"]
+# extras["dev"] += extras["lint"] + extras["test"]
 
 setup(
     name=PACKAGE_NAME,
