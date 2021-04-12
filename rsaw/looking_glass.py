@@ -107,7 +107,7 @@ class LookingGlass:
 
             rrcs = rsaw.looking_glass('140.78.0.0/16')
             print(len(rrcs))
-        
+
         """
         return len(self.rrcs())
 
