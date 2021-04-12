@@ -13,7 +13,7 @@ def args():
     args = parser.parse_args()
 
     # Require ASN or Prefix be specified at a minimum
-    if args.asn == None and args.prefix == None:
+    if args.asn is None and args.prefix is None:
         parser.print_help()
         exit()
 
@@ -25,8 +25,8 @@ def args():
             for prefix in args.prefix.split(","):
                 prefixes.append(ipaddress.ip_network(prefix, strict=False))
 
-        except:
-            print("Invalid IPv4 or IPv6 prefix")
+        except ValueError as e:
+            print(e)
             parser.print_help()
             exit()
 

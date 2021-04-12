@@ -10,7 +10,9 @@ def args():
     parser.add_argument(
         "-a", "--asn", type=str, required=True, help="Autonomous System Number"
     )
-    parser.add_argument("-p", "--prefix", required=True, type=str, help="Prefix to validate")
+    parser.add_argument(
+        "-p", "--prefix", required=True, type=str, help="Prefix to validate"
+    )
 
     args = parser.parse_args()
 
@@ -22,8 +24,8 @@ def args():
             for prefix in args.prefix.split(","):
                 prefixes.append(ipaddress.ip_network(prefix, strict=False))
 
-        except:
-            print("Invalid IPv4 or IPv6 prefix")
+        except ValueError as e:
+            print(e)
             parser.print_help()
             exit()
 
@@ -56,7 +58,7 @@ def main():
 
         if roas:
             print()
-            print(f"ROAs:")
+            print("ROAs:")
 
             line = 0
 

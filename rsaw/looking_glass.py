@@ -1,3 +1,5 @@
+"""Provides the Looking Glass endpoint."""
+
 import ipaddress
 
 from collections import namedtuple
@@ -46,7 +48,8 @@ class LookingGlass:
     VERSION = "2.1"
 
     def __init__(self, resource: ipaddress.ip_network):
-        """Initialize and request prefix from the Looking Glass.
+        """
+        Initialize and request prefix from the Looking Glass.
 
         :param resource: A prefix or an IP address. Prefixes need to match
             exactly a prefix found in the routing data. If given as IP address,
@@ -62,9 +65,8 @@ class LookingGlass:
         self._api = get(LookingGlass.PATH, params)
 
     def __iter__(self):
-        """Provide a way to iterate over each collector node (RRC).
-
-        Example:
+        """
+        Provide a way to iterate over each collector node (RRC).
 
         .. code-block:: python
 
@@ -77,9 +79,8 @@ class LookingGlass:
             yield collector
 
     def __getitem__(self, rrc):
-        """Return the collector node specified.
-
-        Example:
+        """
+        Return the collector node specified.
 
         .. code-block:: python
 
@@ -93,14 +94,14 @@ class LookingGlass:
                 return v
 
     def __len__(self):
-        """Get the number of collector nodes (RRC)
-
-        Example:
+        """
+        Get the number of collector nodes (RRC)
 
         .. code-block:: python
 
             rrcs = rsaw.looking_glass('140.78.0.0/16')
             print(len(rrcs))
+
         """
         return len(self.rrcs())
 
