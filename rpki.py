@@ -10,7 +10,9 @@ def args():
     parser.add_argument(
         "-a", "--asn", type=str, required=True, help="Autonomous System Number"
     )
-    parser.add_argument("-p", "--prefix", required=True, type=str, help="Prefix to validate")
+    parser.add_argument(
+        "-p", "--prefix", required=True, type=str, help="Prefix to validate"
+    )
 
     args = parser.parse_args()
 

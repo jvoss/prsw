@@ -21,7 +21,7 @@ extras = {
         "sphinx",
         "sphinx_rtd_theme",
     ],
-    "readthedocs": ["sphinx"]
+    "readthedocs": ["sphinx"],
 }
 extras["dev"] += extras["lint"] + extras["test"]
 
@@ -35,9 +35,7 @@ setup(
         " simplifies access to the RIPEStat public API."
     ),
     extras_require=extras,
-    install_requires=[
-        "requests >=2"
-    ],
+    install_requires=["requests >=2"],
     keywords="RIPE RIPEStat api wrapper",
     long_description=README,
     version=VERSION,
