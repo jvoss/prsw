@@ -3,5 +3,5 @@ Announced Prefixes
 
 .. autoclass:: rsaw.announced_prefixes
 
-.. autoclass:: rsaw.bgp.AnnouncedPrefixes
+.. autoclass:: rsaw.announced_prefixes.AnnouncedPrefixes
   :inherited-members:

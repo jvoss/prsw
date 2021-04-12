@@ -24,6 +24,7 @@ extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx"]
 
 def skip_member(app, what, name, obj, skip, options):
     if name in {
+        "__getitem__",
         "__init__",
         "__iter__",
         "__len__",

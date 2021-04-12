@@ -3,5 +3,5 @@ Looking Glass
 
 .. autoclass:: rsaw.looking_glass
 
-.. autoclass:: rsaw.bgp.LookingGlass
+.. autoclass:: rsaw.looking_glass.LookingGlass
   :inherited-members:

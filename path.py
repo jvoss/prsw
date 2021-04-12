@@ -43,7 +43,8 @@ def main():
     prefixes = []
 
     if not cli.prefix:
-        prefixes = announced_prefixes(cli.asn)
+        for prefix in announced_prefixes(cli.asn):
+            prefixes.append(prefix.prefix)
     else:
         prefixes = cli.prefix
 

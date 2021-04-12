@@ -1,6 +1,5 @@
 import argparse
 import ipaddress
-import json
 
 from rsaw import announced_prefixes
 from rsaw import rpki_validation_status
@@ -11,7 +10,7 @@ def args():
     parser.add_argument(
         "-a", "--asn", type=str, required=True, help="Autonomous System Number"
     )
-    parser.add_argument("-p", "--prefix", type=str, help="Prefix to validate")
+    parser.add_argument("-p", "--prefix", required=True, type=str, help="Prefix to validate")
 
     args = parser.parse_args()
 
@@ -45,8 +44,8 @@ def main():
 
     for prefix in prefixes:
         resp = rpki_validation_status(cli.asn, prefix)
-        status = resp.status()
-        roas = resp.validating_roas()
+        status = resp.status
+        roas = resp.validating_roas
 
         print()
         print("=" * 80)

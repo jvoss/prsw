@@ -3,5 +3,5 @@ RPKI Validation Status
 
 .. autoclass:: rsaw.rpki_validation_status
 
-.. autoclass:: rsaw.bgp.RPKIValidationStatus
+.. autoclass:: rsaw.rpki_validation_status.RPKIValidationStatus
   :inherited-members:
