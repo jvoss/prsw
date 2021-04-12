@@ -1,4 +1,3 @@
-import os
 import sys
 from datetime import datetime
 
@@ -31,7 +30,7 @@ def skip_member(app, what, name, obj, skip, options):
     }:
         return False
     return skip
-    
+
 
 def setup(app):
     app.connect("autodoc-skip-member", skip_member)

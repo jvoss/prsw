@@ -34,7 +34,7 @@ class Output:
     ):
         self._url = _url
 
-        if status_code is 200:
+        if status_code == 200:
             self.messages = messages
             self.see_also = see_also
             self.version = str(version)

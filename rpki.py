@@ -22,8 +22,8 @@ def args():
             for prefix in args.prefix.split(","):
                 prefixes.append(ipaddress.ip_network(prefix, strict=False))
 
-        except:
-            print("Invalid IPv4 or IPv6 prefix")
+        except ValueError as e:
+            print(e)
             parser.print_help()
             exit()
 
@@ -56,7 +56,7 @@ def main():
 
         if roas:
             print()
-            print(f"ROAs:")
+            print("ROAs:")
 
             line = 0
 
