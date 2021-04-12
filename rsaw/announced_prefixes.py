@@ -1,3 +1,5 @@
+"""Provides the Announced Prefixes endpoint."""
+
 import ipaddress
 
 from collections import namedtuple
@@ -35,7 +37,8 @@ class AnnouncedPrefixes:
         endtime: Optional[datetime] = None,
         min_peers_seeing=None,
     ):
-        """Initialize and request Announced Prefixes.
+        """
+        Initialize and request Announced Prefixes.
 
         :param resource: The Autonomous System Number for which to return prefixes
         :param starttime: The start time for the query. (defaults to two
@@ -68,10 +71,11 @@ class AnnouncedPrefixes:
         self._api = get(AnnouncedPrefixes.PATH, params)
 
     def __iter__(self):
-        """Provide a way to iterate over announced prefixes.
+        """
+        Provide a way to iterate over announced prefixes.
 
         Example:
-
+        -------
         .. code-block:: python
 
             prefixes = rsaw.announced_prefixes(3333)
@@ -84,13 +88,15 @@ class AnnouncedPrefixes:
             yield prefix
 
     def __getitem__(self, index):
+        """Get a specific index of the returned anncouned prefixes."""
         return self.prefixes[index]
 
     def __len__(self):
-        """Get the number of prefixes in announced prefixes
+        """
+        Get the number of prefixes in announced prefixes.
 
         Example:
-
+        -------
         .. code-block:: python
 
             prefixes = rsaw.announced_prefixes(3333)
@@ -111,9 +117,7 @@ class AnnouncedPrefixes:
 
     @property
     def prefixes(self):
-        """
-        A list of all announced prefixes + the timelines when they were visible.
-        """
+        """A list of all announced prefixes + the timelines when they were visible."""
         prefixes = []
         AnnouncedPrefix = namedtuple("AnnouncedPrefix", ["prefix", "timelines"])
 

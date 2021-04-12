@@ -7,14 +7,20 @@ API_URL = "https://stat.ripe.net/data"
 
 
 class RequestError(Exception):
+    """Error class for wrapping request errors."""
+
     pass
 
 
 class ResponseError(Exception):
+    """Error class for wrapping API response errors."""
+
     pass
 
 
 class Output:
+    """Object used to hold the response and metadata from the API."""
+
     def __init__(
         self,
         _url,
@@ -32,6 +38,7 @@ class Output:
         status_code: Optional[int] = 0,
         time: Optional[str] = "",
     ):
+        """Initialize the Output object."""
         self._url = _url
 
         if status_code == 200:
@@ -53,6 +60,8 @@ class Output:
 
 
 def get(path, params):
+    """Retrieve the requested path with parameters as GET from the API."""
+
     url = API_URL + str(path) + "data.json?" + str(params)
 
     try:

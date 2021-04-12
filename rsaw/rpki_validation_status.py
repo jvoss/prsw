@@ -1,3 +1,5 @@
+"""Provides the RPKI Validation Status endpoint."""
+
 import ipaddress
 
 from collections import namedtuple
@@ -33,7 +35,8 @@ class RPKIValidationStatus:
         resource,
         prefix: ipaddress.ip_network,
     ):
-        """Initialize and request RPKIValidationStatus
+        """
+        Initialize and request RPKIValidationStatus
 
         :param resource: The ASN used to perform the RPKI validity state lookup.
         :param prefix: The prefix to perform the RPKI validity state lookup.
@@ -55,7 +58,7 @@ class RPKIValidationStatus:
 
     @property
     def resource(self):
-        """The resource (ASN) this query is based on."""
+        """The ASN this query is based on."""
         return self._api.data["resource"]
 
     @property
