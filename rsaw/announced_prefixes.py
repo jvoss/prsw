@@ -74,8 +74,6 @@ class AnnouncedPrefixes:
         """
         Provide a way to iterate over announced prefixes.
 
-        Example:
-        -------
         .. code-block:: python
 
             prefixes = rsaw.announced_prefixes(3333)
@@ -95,8 +93,6 @@ class AnnouncedPrefixes:
         """
         Get the number of prefixes in announced prefixes.
 
-        Example:
-        -------
         .. code-block:: python
 
             prefixes = rsaw.announced_prefixes(3333)

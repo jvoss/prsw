@@ -68,8 +68,6 @@ class LookingGlass:
         """
         Provide a way to iterate over each collector node (RRC).
 
-        Example:
-        -------
         .. code-block:: python
 
             rrcs = rsaw.looking_glass('140.78.0.0/16')
@@ -84,8 +82,6 @@ class LookingGlass:
         """
         Return the collector node specified.
 
-        Example:
-        -------
         .. code-block:: python
 
             rrcs = rsaw.looking_glass('140.78.0.0/16')
@@ -101,8 +97,6 @@ class LookingGlass:
         """
         Get the number of collector nodes (RRC)
 
-        Example:
-        -------
         .. code-block:: python
 
             rrcs = rsaw.looking_glass('140.78.0.0/16')
