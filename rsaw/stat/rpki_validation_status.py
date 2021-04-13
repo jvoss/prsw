@@ -18,7 +18,7 @@ class RPKIValidationStatus:
     Attribute       Description
     ============    ===================================================================
     ``resource``    The ASN used to perform the RPKI validity state lookup.
-    ``prefix``      The prefix to perform the RPKI validity state lookup. Note the 
+    ``prefix``      The prefix to perform the RPKI validity state lookup. Note the
                     prefix’s length is also taken from this field.
     ============    ===================================================================
 

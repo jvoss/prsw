@@ -62,7 +62,7 @@ class LookingGlass:
         params = f"preferred_version={LookingGlass.VERSION}&"
         params += "resource=" + str(resource)
 
-        self._api  = RIPEstat._get(LookingGlass.PATH, params)
+        self._api = RIPEstat._get(LookingGlass.PATH, params)
         self._rrcs = self._objectify_rrcs(self._api.data["rrcs"])
 
     def __iter__(self):
@@ -111,11 +111,11 @@ class LookingGlass:
 
         .. code-block:: python
 
-            import rsaw 
+            import rsaw
 
             ripe = rsaw.RIPEstat()
             rrcs = ripe.looking_glass('140.78.0.0/16')
-            
+
             print(len(rrcs))
 
         """
@@ -180,14 +180,14 @@ class LookingGlass:
     def peers(self):
         """
         Shortcut to a List containing all peers from every collector node (RRC).
-        
+
         .. code-block:: python
 
-            import rsaw 
+            import rsaw
 
             ripe = rsaw.RIPEstat()
             rrcs = ripe.looking_glass('140.78.0.0/16')
-            
+
             for peer in rrcs.peers:
                 print(peer.as_path)
 

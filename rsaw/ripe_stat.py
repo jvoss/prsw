@@ -36,7 +36,7 @@ class RIPEstat:
             see `data_overload_limit()`)
         :param sourceapp: A unique identifier attached to API calls. This identifier
             helps RIPE assit you when you encounter any problems with the system. The
-            identifier can be your project name or your company's. See 
+            identifier can be your project name or your company's. See
             `RIPEstat API Overview <https://stat.ripe.net/docs/data_api/#Overview>`_
             for details.
         """
@@ -48,7 +48,7 @@ class RIPEstat:
     @property
     def data_overload_limit(self) -> str:
         """
-        The data overload prevention is to protect users, especially widgets, from 
+        The data overload prevention is to protect users, especially widgets, from
         getting more data than they can handle. For this reason some data calls already
         support a soft-limit check which returns a warning if the output looks to be
         more than usual.
@@ -56,7 +56,7 @@ class RIPEstat:
         This prevention mechanism should only kick in if the request stems from a
         browser (the referrer header set), but in case it happens for a non-browser
         request, it can easily suppressed by the "data_overload_limit" parameter set
-        to "ignore". 
+        to "ignore".
         """
         return self._data_overload_limit
 
