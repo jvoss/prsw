@@ -62,7 +62,8 @@ class LookingGlass:
         params = f"preferred_version={LookingGlass.VERSION}&"
         params += "resource=" + str(resource)
 
-        self._api = RIPEstat._get(LookingGlass.PATH, params)
+        self._api  = RIPEstat._get(LookingGlass.PATH, params)
+        self._rrcs = self._objectify_rrcs(self._api.data["rrcs"])
 
     def __iter__(self):
         """
@@ -120,33 +121,9 @@ class LookingGlass:
         """
         return len(self.rrcs())
 
-    @property
-    def latest_time(self):
-        """Provides `datetime` on how recent the data is."""
-        return datetime.fromisoformat(self._api.data["latest_time"])
+    def _objectify_rrcs(self, list):
+        """Processes RRCs from API response."""
 
-    @property
-    def query_time(self):
-        """Provides `datetime` on when the query was performed."""
-        return datetime.fromisoformat(self._api.data["latest_time"])
-
-    @property
-    def peers(self):
-        """List containing all peers from ever collector node (RRC)."""
-        peers = []
-
-        for rrc in self.rrcs:
-            peers += rrc.peers
-
-        return peers
-
-    @property
-    def rrcs(self):
-        """
-        List containing one entry for each collector node (RRC) that provides
-        data for the given input resource. Each RRC entry holds the location and
-        the ID of the RRC together with the list of BGP peer information.
-        """
         rrcs = []
 
         RRC = namedtuple("RRC", ["rrc", "location", "peers"])
@@ -165,9 +142,8 @@ class LookingGlass:
             ],
         )
 
-        for rrc in self._api.data["rrcs"]:
+        for rrc in list:
             peers = []
-            rrc = rrc.copy()
 
             # repack peers with python objects
             for peer in rrc["peers"]:
@@ -189,3 +165,45 @@ class LookingGlass:
             rrcs.append(RRC(**rrc))
 
         return rrcs
+
+    @property
+    def latest_time(self):
+        """Provides `datetime` on how recent the data is."""
+        return datetime.fromisoformat(self._api.data["latest_time"])
+
+    @property
+    def query_time(self):
+        """Provides `datetime` on when the query was performed."""
+        return datetime.fromisoformat(self._api.data["latest_time"])
+
+    @property
+    def peers(self):
+        """
+        Shortcut to a List containing all peers from every collector node (RRC).
+        
+        .. code-block:: python
+
+            import rsaw 
+
+            ripe = rsaw.RIPEstat()
+            rrcs = ripe.looking_glass('140.78.0.0/16')
+            
+            for peer in rrcs.peers:
+                print(peer.as_path)
+
+        """
+        peers = []
+
+        for rrc in self.rrcs:
+            peers += rrc.peers
+
+        return peers
+
+    @property
+    def rrcs(self):
+        """
+        List containing one entry for each collector node (RRC) that provides
+        data for the given input resource. Each RRC entry holds the location and
+        the ID of the RRC together with the list of BGP peer information.
+        """
+        return self._rrcs
