@@ -14,6 +14,14 @@ class RPKIValidationStatus:
 
     Reference: `<https://stat.ripe.net/docs/data_api#rpki-validation>`_
 
+    ============    ===================================================================
+    Attribute       Description
+    ============    ===================================================================
+    ``resource``    The ASN used to perform the RPKI validity state lookup.
+    ``prefix``      The prefix to perform the RPKI validity state lookup. Note the 
+                    prefix’s length is also taken from this field.
+    ============    ===================================================================
+
     .. code-block:: python
 
         import rsaw
@@ -36,13 +44,7 @@ class RPKIValidationStatus:
         resource,
         prefix: ipaddress.ip_network,
     ):
-        """
-        Initialize and request RPKIValidationStatus
-
-        :param resource: The ASN used to perform the RPKI validity state lookup.
-        :param prefix: The prefix to perform the RPKI validity state lookup.
-            Note the prefix's length is also taken from this field.
-        """
+        """Initialize and request RPKIValidationStatus."""
 
         # validate and sanitize prefix (ensure is proper boundary)
         prefix = ipaddress.ip_network(prefix, strict=False)
