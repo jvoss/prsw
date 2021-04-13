@@ -1,7 +1,5 @@
 Announced Prefixes
 ==================
 
-.. autoclass:: rsaw.announced_prefixes
-
-.. autoclass:: rsaw.announced_prefixes.AnnouncedPrefixes
+.. autoclass:: rsaw.api.announced_prefixes.AnnouncedPrefixes
   :inherited-members:

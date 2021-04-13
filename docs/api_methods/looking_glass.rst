@@ -1,7 +1,5 @@
 Looking Glass
 =============
 
-.. autoclass:: rsaw.looking_glass
-
-.. autoclass:: rsaw.looking_glass.LookingGlass
+.. autoclass:: rsaw.api.looking_glass.LookingGlass
   :inherited-members:

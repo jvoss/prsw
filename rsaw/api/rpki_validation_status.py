@@ -18,7 +18,9 @@ class RPKIValidationStatus:
 
         import rsaw
 
-        result = rsaw.rpki_validation_status(3333, '193.0.0.0/21')
+        ripe = rsaw.RIPEstat()
+        result = ripe.rpki_validation_status(3333, '193.0.0.0/21')
+
         print(result.status)
 
         for roa in result.validating_roas:

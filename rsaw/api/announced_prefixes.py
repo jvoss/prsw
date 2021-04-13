@@ -32,7 +32,8 @@ class AnnouncedPrefixes:
 
         import rsaw
 
-        prefixes = rsaw.announced_prefixes(3333)
+        ripe = rsaw.RIPEstat()
+        prefixes = ripe.announced_prefixes(3333)
 
         for network in prefixes:
             print(network.prefix, network.timelines)
@@ -79,7 +80,11 @@ class AnnouncedPrefixes:
 
         .. code-block:: python
 
-            prefixes = rsaw.announced_prefixes(3333)
+            import rsaw
+
+            ripe = rsaw.RIPEstat()
+            prefixes = ripe.announced_prefixes(3333)
+
             for announced_prefix in prefixes:
                 print(announced_prefix.prefix, announced_prefix.timelines)
 
@@ -97,7 +102,11 @@ class AnnouncedPrefixes:
 
         .. code-block:: python
 
-            prefixes = rsaw.announced_prefixes(3333)
+            import rsaw
+
+            ripe = rsaw.RIPEstat()
+            prefixes = ripe.announced_prefixes(3333)
+
             print(len(prefixes))
 
         """
