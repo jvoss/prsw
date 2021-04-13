@@ -4,8 +4,6 @@ import ipaddress
 
 from collections import namedtuple
 
-from ._api import get
-
 
 class RPKIValidationStatus:
     """
@@ -32,6 +30,7 @@ class RPKIValidationStatus:
 
     def __init__(
         self,
+        RIPEstat,
         resource,
         prefix: ipaddress.ip_network,
     ):
@@ -49,7 +48,7 @@ class RPKIValidationStatus:
         params = f"preferred_version={RPKIValidationStatus.VERSION}&"
         params += "resource=" + str(resource) + "&prefix=" + str(prefix)
 
-        self._api = get(RPKIValidationStatus.PATH, params)
+        self._api = RIPEstat.get(RPKIValidationStatus.PATH, params)
 
     @property
     def prefix(self):

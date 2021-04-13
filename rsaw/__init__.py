@@ -9,8 +9,6 @@ https://stat.ripe.net/docs/data_api
 
 """
 
-from .announced_prefixes import AnnouncedPrefixes as announced_prefixes
-from .looking_glass import LookingGlass as looking_glass
-from .rpki_validation_status import RPKIValidationStatus as rpki_validation_status
+from .ripe_stat import RIPEstat
 
 __version__ = "0.0.1"

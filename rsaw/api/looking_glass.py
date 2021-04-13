@@ -5,8 +5,6 @@ import ipaddress
 from collections import namedtuple
 from datetime import datetime
 
-from ._api import get
-
 
 class LookingGlass:
     """
@@ -47,7 +45,7 @@ class LookingGlass:
     PATH = "/looking-glass/"
     VERSION = "2.1"
 
-    def __init__(self, resource: ipaddress.ip_network):
+    def __init__(self, RIPEstat, resource: ipaddress.ip_network):
         """
         Initialize and request prefix from the Looking Glass.
 
@@ -62,7 +60,7 @@ class LookingGlass:
         params = f"preferred_version={LookingGlass.VERSION}&"
         params += "resource=" + str(resource)
 
-        self._api = get(LookingGlass.PATH, params)
+        self._api = RIPEstat._get(LookingGlass.PATH, params)
 
     def __iter__(self):
         """
