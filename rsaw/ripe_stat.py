@@ -6,8 +6,8 @@ from typing import Optional, Type
 from ._api import get as get
 
 from .stat.announced_prefixes import AnnouncedPrefixes
-from .stat.looking_glass import LookingGlass as looking_glass
-from .stat.rpki_validation_status import RPKIValidationStatus as rpki_validation_status
+from .stat.looking_glass import LookingGlass
+from .stat.rpki_validation_status import RPKIValidationStatus
 
 
 class RIPEstat:
@@ -82,11 +82,11 @@ class RIPEstat:
         return partial(AnnouncedPrefixes, self)
 
     @property
-    def looking_glass(self) -> Type[looking_glass]:
+    def looking_glass(self) -> Type[LookingGlass]:
         """Lazy alias to :class:`.api.LookingGlass`."""
-        return partial(looking_glass, self)
+        return partial(LookingGlass, self)
 
     @property
-    def rpki_validation_status(self) -> Type[rpki_validation_status]:
+    def rpki_validation_status(self) -> Type[RPKIValidationStatus]:
         """Lazy alias to :class:`.api.RPKIValidationStatus`."""
-        return partial(rpki_validation_status, self)
+        return partial(RPKIValidationStatus, self)
