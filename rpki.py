@@ -1,8 +1,6 @@
 import argparse
 import ipaddress
-
-from rsaw import announced_prefixes
-from rsaw import rpki_validation_status
+import rsaw
 
 
 def args():
@@ -37,15 +35,16 @@ def args():
 def main():
     # Parse arguments
     cli = args()
+    ripe = rsaw.RIPEstat()
 
     # Pull all prefixes for an ASN if needed
     if not cli.prefix:
-        prefixes = announced_prefixes(cli.asn)
+        prefixes = ripe.announced_prefixes(cli.asn)
     else:
         prefixes = cli.prefix
 
     for prefix in prefixes:
-        resp = rpki_validation_status(cli.asn, prefix)
+        resp = ripe.rpki_validation_status(cli.asn, prefix)
         status = resp.status
         roas = resp.validating_roas
 

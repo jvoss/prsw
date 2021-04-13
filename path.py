@@ -1,8 +1,6 @@
 import argparse
 import ipaddress
-
-from rsaw import announced_prefixes
-from rsaw import looking_glass
+import rsaw
 
 
 def args():
@@ -38,19 +36,20 @@ def args():
 def main():
     # Parse arguments
     cli = args()
+    ripe = rsaw.RIPEstat()
 
     paths = {}
     prefixes = []
 
     if not cli.prefix:
-        for prefix in announced_prefixes(cli.asn):
+        for prefix in ripe.announced_prefixes(cli.asn):
             prefixes.append(prefix.prefix)
     else:
         prefixes = cli.prefix
 
     # Get paths for each prefixes
     for prefix in prefixes:
-        paths[str(prefix)] = looking_glass(prefix)
+        paths[str(prefix)] = ripe.looking_glass(prefix)
 
     # Write baseline file for prefixes
     # with open('baseline.json', 'w') as file:

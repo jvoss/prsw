@@ -50,7 +50,7 @@ class RPKIValidationStatus:
         params = f"preferred_version={RPKIValidationStatus.VERSION}&"
         params += "resource=" + str(resource) + "&prefix=" + str(prefix)
 
-        self._api = RIPEstat.get(RPKIValidationStatus.PATH, params)
+        self._api = RIPEstat._get(RPKIValidationStatus.PATH, params)
 
     @property
     def prefix(self):
