@@ -31,7 +31,7 @@ class RIPEstat:
     def _get(self, path, params):
         """Retrieve the requested path with parameters as GET from the API."""
         if self.data_overload_limit:
-            params += f"&data_overload_limit=ignore"
+            params += "&data_overload_limit=ignore"
         if self.sourceapp:
             params += f"&sourceapp={self.sourceapp}"
 
