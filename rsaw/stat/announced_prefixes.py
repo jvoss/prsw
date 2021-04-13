@@ -6,8 +6,6 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Optional
 
-from ._api import get
-
 
 class AnnouncedPrefixes:
     """
@@ -16,11 +14,26 @@ class AnnouncedPrefixes:
 
     Reference: `<https://stat.ripe.net/docs/data_api#announced-prefixes>`_
 
+    ====================    =======================================================
+    Attribute               Description
+    ====================    =======================================================
+    ``resource``            The Autonomous System Number for which to return
+                            prefixes
+    ``starttime``           The start time for the query. (defaults to two weeks
+                            before current date and time)
+    ``endtime``             The start time for the query. (defaults to two
+                            weeks before current date and time)
+    ``min_peers_seeing``    Minimum number of RIS peers seeing the prefix for
+                            it to be included in the results. Excludes low
+                            visibility/localized announcements. (default 10)
+    ====================    =======================================================
+
     .. code-block:: python
 
         import rsaw
 
-        prefixes = rsaw.announced_prefixes(3333)
+        ripe = rsaw.RIPEstat()
+        prefixes = ripe.announced_prefixes(3333)
 
         for network in prefixes:
             print(network.prefix, network.timelines)
@@ -32,22 +45,13 @@ class AnnouncedPrefixes:
 
     def __init__(
         self,
+        RIPEstat,
         resource,
         starttime: Optional[datetime] = None,
         endtime: Optional[datetime] = None,
         min_peers_seeing=None,
     ):
-        """
-        Initialize and request Announced Prefixes.
-
-        :param resource: The Autonomous System Number for which to return prefixes
-        :param starttime: The start time for the query. (defaults to two
-            weeks before current date and time)
-        :param endtime: The end time for the query. (defaults to now)
-        :param min_peers_seeing: Minimum number of RIS peers seeing the prefix for
-            it to be included in the results. Excludes low
-            visibility/localized announcements. (default 10)
-        """
+        """Initialize and request Announced Prefixes."""
 
         params = f"preferred_version={AnnouncedPrefixes.VERSION}&"
         params += "resource=" + str(resource)
@@ -68,7 +72,7 @@ class AnnouncedPrefixes:
             else:
                 raise ValueError("min_peers_seeing expected to be int")
 
-        self._api = get(AnnouncedPrefixes.PATH, params)
+        self._api = RIPEstat._get(AnnouncedPrefixes.PATH, params)
 
     def __iter__(self):
         """
@@ -76,12 +80,15 @@ class AnnouncedPrefixes:
 
         .. code-block:: python
 
-            prefixes = rsaw.announced_prefixes(3333)
+            import rsaw
+
+            ripe = rsaw.RIPEstat()
+            prefixes = ripe.announced_prefixes(3333)
+
             for announced_prefix in prefixes:
                 print(announced_prefix.prefix, announced_prefix.timelines)
 
         """
-
         for prefix in self.prefixes:
             yield prefix
 
@@ -95,7 +102,11 @@ class AnnouncedPrefixes:
 
         .. code-block:: python
 
-            prefixes = rsaw.announced_prefixes(3333)
+            import rsaw
+
+            ripe = rsaw.RIPEstat()
+            prefixes = ripe.announced_prefixes(3333)
+
             print(len(prefixes))
 
         """

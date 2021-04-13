@@ -4,8 +4,6 @@ import ipaddress
 
 from collections import namedtuple
 
-from ._api import get
-
 
 class RPKIValidationStatus:
     """
@@ -16,11 +14,21 @@ class RPKIValidationStatus:
 
     Reference: `<https://stat.ripe.net/docs/data_api#rpki-validation>`_
 
+    ============    ===================================================================
+    Attribute       Description
+    ============    ===================================================================
+    ``resource``    The ASN used to perform the RPKI validity state lookup.
+    ``prefix``      The prefix to perform the RPKI validity state lookup. Note the
+                    prefix’s length is also taken from this field.
+    ============    ===================================================================
+
     .. code-block:: python
 
         import rsaw
 
-        result = rsaw.rpki_validation_status(3333, '193.0.0.0/21')
+        ripe = rsaw.RIPEstat()
+        result = ripe.rpki_validation_status(3333, '193.0.0.0/21')
+
         print(result.status)
 
         for roa in result.validating_roas:
@@ -32,16 +40,11 @@ class RPKIValidationStatus:
 
     def __init__(
         self,
+        RIPEstat,
         resource,
         prefix: ipaddress.ip_network,
     ):
-        """
-        Initialize and request RPKIValidationStatus
-
-        :param resource: The ASN used to perform the RPKI validity state lookup.
-        :param prefix: The prefix to perform the RPKI validity state lookup.
-            Note the prefix's length is also taken from this field.
-        """
+        """Initialize and request RPKIValidationStatus."""
 
         # validate and sanitize prefix (ensure is proper boundary)
         prefix = ipaddress.ip_network(prefix, strict=False)
@@ -49,7 +52,7 @@ class RPKIValidationStatus:
         params = f"preferred_version={RPKIValidationStatus.VERSION}&"
         params += "resource=" + str(resource) + "&prefix=" + str(prefix)
 
-        self._api = get(RPKIValidationStatus.PATH, params)
+        self._api = RIPEstat._get(RPKIValidationStatus.PATH, params)
 
     @property
     def prefix(self):
