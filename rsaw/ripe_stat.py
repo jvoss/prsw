@@ -5,9 +5,9 @@ from typing import Optional, Type
 
 from ._api import get as get
 
-from .api.announced_prefixes import AnnouncedPrefixes
-from .api.looking_glass import LookingGlass as looking_glass
-from .api.rpki_validation_status import RPKIValidationStatus as rpki_validation_status
+from .stat.announced_prefixes import AnnouncedPrefixes
+from .stat.looking_glass import LookingGlass as looking_glass
+from .stat.rpki_validation_status import RPKIValidationStatus as rpki_validation_status
 
 
 class RIPEstat:

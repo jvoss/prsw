@@ -18,6 +18,14 @@ class LookingGlass:
 
     Reference: `<https://stat.ripe.net/docs/data_api#looking-glass>`_
 
+    ============    ===================================================================
+    Attribute       Description
+    ============    ===================================================================
+    ``resource``    A prefix or an IP address. Prefixes need to match exactly a prefix
+                    found in the routing data. If given as IP address, the data call
+                    will try to find the encompassing prefix for the IP address.
+    ============    ===================================================================
+
     .. code-block:: python
 
         import rsaw
@@ -47,14 +55,7 @@ class LookingGlass:
     VERSION = "2.1"
 
     def __init__(self, RIPEstat, resource: ipaddress.ip_network):
-        """
-        Initialize and request prefix from the Looking Glass.
-
-        :param resource: A prefix or an IP address. Prefixes need to match
-            exactly a prefix found in the routing data. If given as IP address,
-            the data call will try to find the encompassing prefix for the IP address.
-
-        """
+        """Initialize and request prefix from the Looking Glass."""
         # validate and sanitize prefix (ensure proper boundary)
         resource = ipaddress.ip_network(str(resource), strict=False)
 
@@ -95,6 +96,9 @@ class LookingGlass:
             rrc = rrcs['RRC00']
             print(rrc.location)
 
+            for peer in rrc.peers:
+                print(peer.as_path)
+
         """
         for v in self.rrcs:
             if v.rrc == rrc:
@@ -125,6 +129,16 @@ class LookingGlass:
     def query_time(self):
         """Provides `datetime` on when the query was performed."""
         return datetime.fromisoformat(self._api.data["latest_time"])
+
+    @property
+    def peers(self):
+        """List containing all peers from ever collector node (RRC)."""
+        peers = []
+
+        for rrc in self.rrcs:
+            peers += rrc.peers
+
+        return peers
 
     @property
     def rrcs(self):

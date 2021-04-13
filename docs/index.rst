@@ -18,11 +18,11 @@ Documentation is organized into the following sections:
 
 .. toctree::
     :maxdepth: 1
-    :caption: API Methods
+    :caption: API
 
-    api_methods/announced_prefixes
-    api_methods/looking_glass
-    api_methods/rpki_validation_status
+    api/announced_prefixes
+    api/looking_glass
+    api/rpki_validation_status
 
 .. _tutorial:
 
