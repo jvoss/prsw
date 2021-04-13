@@ -17,9 +17,9 @@ class AnnouncedPrefixes:
     ====================    =======================================================
     Attribute               Description
     ====================    =======================================================
-    ``resource``            The Autonomous System Number for which to return 
+    ``resource``            The Autonomous System Number for which to return
                             prefixes
-    ``starttime``           The start time for the query. (defaults to two weeks 
+    ``starttime``           The start time for the query. (defaults to two weeks
                             before current date and time)
     ``endtime``             The start time for the query. (defaults to two
                             weeks before current date and time)
