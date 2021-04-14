@@ -35,29 +35,32 @@ disable.
 Usage examples
 --------------
 
-With the `ripe` instance you can interact with the RIPEstat API:
+With the ``ripe`` instance you can interact with the RIPEstat API:
 
 .. code-block:: python
 
   # Find all announced prefixes for a Autonomous System
   prefixes = ripe.announced_prefixes(3333)
 
+  for network in prefixes:
+      print(network.prefix, network.timelines)
+
   # Interact with the looking glass
   for collector in ripe.looking_glass('140.78.0.0/16'):
-    print(collector.location)
+      print(collector.location)
 
-    for peer in collector.peers:
-        print(
-            peer.asn_origin,
-            peer.as_path,
-            peer.community,
-            peer.last_update,
-            peer.prefix,
-            peer.peer,
-            peer.origin,
-            peer.next_hop,
-            peer.latest_time
-        )
+      for peer in collector.peers:
+          print(
+              peer.asn_origin,
+              peer.as_path,
+              peer.community,
+              peer.last_update,
+              peer.prefix,
+              peer.peer,
+              peer.origin,
+              peer.next_hop,
+              peer.latest_time
+          )
 
   # Check RPKI validation status
   print(ripe.rpki_validation_status(3333, '193.0.0.0/21').status)
