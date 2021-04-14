@@ -3,8 +3,7 @@
 from functools import partial
 from typing import Optional, Type
 
-from ._api import get
-
+from .api import get
 from .stat.announced_prefixes import AnnouncedPrefixes
 from .stat.looking_glass import LookingGlass
 from .stat.rpki_validation_status import RPKIValidationStatus
