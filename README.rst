@@ -2,7 +2,7 @@ RSAW: RIPE Stat API Wrapper
 ===========================
 
 RSAW is a Python package that allows for simple access to the
-`RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
+`RIPEstat Data API <https://stat.ripe.net/docs/data_api>`_.
 
 Installation
 ------------
