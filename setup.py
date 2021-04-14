@@ -22,8 +22,9 @@ extras = {
         "sphinx_rtd_theme",
     ],
     "readthedocs": ["sphinx"],
+    "test": ["pytest >= 2.7.3"],
 }
-# extras["dev"] += extras["lint"] + extras["test"]
+extras["dev"] += extras["lint"] + extras["test"]
 
 setup(
     name=PACKAGE_NAME,
