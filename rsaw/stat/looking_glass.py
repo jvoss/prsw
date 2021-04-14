@@ -157,7 +157,7 @@ class LookingGlass:
                 peers.append(Peer(**peer))
 
             rrc["peers"] = peers
-            rrcs[rrc["rrc"]] = (RRC(**rrc))
+            rrcs[rrc["rrc"]] = RRC(**rrc)
 
         return rrcs
 
