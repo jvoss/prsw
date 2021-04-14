@@ -34,10 +34,23 @@ class LookingGlass:
         result = ripe.looking_glass('140.78.0.0/16')
 
         for collector in result:
+            # RRC(rrc='RRC00', location='Amsterdam, Netherlands', peers=[...])
+
             print(collector.rrc)
             print(collector.location)
 
             for peer in collector.peers:
+                # Peer(
+                #   asn_origin=1205, 
+                #   as_path=(34854, 6939, 1853, 1853, 1205), 
+                #   community=['34854:1009'], 
+                #   last_updated=datetime.datetime(2021, 4, 13, 22, 48, 26), 
+                #   prefix=IPv4Network('140.78.0.0/16'), 
+                #   peer=IPv4Address('2.56.11.1'), origin='IGP', 
+                #   next_hop=IPv4Address('2.56.11.1'), 
+                #   latest_time=datetime.datetime(2021, 4, 14, 12, 54, 37)
+                # )
+
                 print(
                     peer.asn_origin,
                     peer.as_path,

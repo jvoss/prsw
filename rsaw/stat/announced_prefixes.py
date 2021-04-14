@@ -36,6 +36,14 @@ class AnnouncedPrefixes:
         prefixes = ripe.announced_prefixes(3333)
 
         for network in prefixes:
+            # AnnouncedPrefix(
+            #   prefix=IPv4Network('193.0.0.0/21'), 
+            #   timelines=[
+            #       {'starttime': datetime.datetime(2021, 3, 31, 8, 0)}, 
+            #       {'endtime': datetime.datetime(2021, 4, 14, 8, 0)}
+            #   ]
+            # )
+
             print(network.prefix, network.timelines)
 
     """
