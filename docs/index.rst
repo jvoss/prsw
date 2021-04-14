@@ -1,12 +1,8 @@
-RSAW: RIPEStat API Wrapper
+RSAW: RIPE Stat API Wrapper
 ===================================
 
-Documentation is organized into the following sections:
-
-- :ref:`getting_started`
-- :ref:`api_methods`
-- :ref:`tutorial`
-- :ref:`package_info`
+RSAW is a Python package that allows for simple access to the
+`RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
 
 .. _getting_started:
 
@@ -14,7 +10,10 @@ Documentation is organized into the following sections:
     :maxdepth: 1
     :caption: Getting Started
 
-.. _api_methods:
+    getting_started/installation
+    getting_started/quick_start
+
+.. _api:
 
 .. toctree::
     :maxdepth: 1

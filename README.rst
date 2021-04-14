@@ -18,7 +18,7 @@ To install the latest development version run the following instead:
 
 .. code-block:: bash
 
-  pip install --upgrade https://github.com/jvoss/rsaw/archive/refs/heads/master.zip
+  pip install --upgrade https://github.com/jvoss/rsaw/archive/master.zip
 
 Quickstart
 ----------
