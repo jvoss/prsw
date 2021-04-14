@@ -12,7 +12,8 @@ Instantiate a basic instance of RIPEstat:
 ``sourceapp``
 -------------
 
-You can specify the ``sourceapp`` parameter to set a unique identifier. See the
+You can specify the ``sourceapp`` parameter to add a unique identifier to every
+call. See the
 `RIPE Stat Data API Documentation <https://stat.ripe.net/docs/data_api#Overview>`_ 
 for details.
 
