@@ -1,13 +1,13 @@
 """RSAW exception classes."""
 
 
-class RequestError(Exception):
+class RSAWException(Exception):
+    """Base Exception that all over exceptions extend."""
+
+
+class RequestError(RSAWException):
     """Error class for wrapping request errors."""
 
-    pass
 
-
-class ResponseError(Exception):
+class ResponseError(RSAWException):
     """Error class for wrapping API response errors."""
-
-    pass
