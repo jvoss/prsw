@@ -66,7 +66,7 @@ Please see the `documentation <https://rsaw.readthedocs.io/>`_ for more options.
 Contributing
 ------------
 
-Contributions are encouraged. Please see `CONTRIBUTING.rst`_ for details.
+Contributions are encouraged. Please see `CONTRIBUTING <CONTRIBUTING.rst>`_ for details.
 
 License
 -------
