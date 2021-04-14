@@ -64,7 +64,7 @@ class TestGet(UnitTest):
     def test_get__url(self, mock_get):
         response = get("/success/", "param=test")
         mock_get.assert_called()
-        assert response._url == API_URL + "/success/data.json?param=test" 
+        assert response._url == API_URL + "/success/data.json?param=test"
 
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__successful_response(self, mock_get):
