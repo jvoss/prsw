@@ -1,3 +1,5 @@
+"""Base RIPEstat API interactions."""
+
 import datetime
 import requests
 
