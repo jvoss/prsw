@@ -3,7 +3,7 @@ from unittest import mock
 
 from . import UnitTest
 
-from rsaw.api import get, Output
+from rsaw.api import get, Output, API_URL
 from rsaw.exceptions import RequestError, ResponseError
 
 
@@ -24,7 +24,7 @@ class TestApi(UnitTest):
     }
 
     def mocked_get(*args, **kwargs):
-        """Mock GET request."""
+        """Mock requests.get()"""
 
         class MockResponse:
             def __init__(self, json_data, status_code):
@@ -49,7 +49,8 @@ class TestApi(UnitTest):
 
 class TestOutput(UnitTest):
     def test__init__valid_params(self):
-        pass
+        output = Output("https://example.com", **TestApi.RESPONSE)
+        assert isinstance(output, Output)
 
     def test__init__invalid_params(self):
         invalid_response = TestApi.RESPONSE.copy()
@@ -60,9 +61,16 @@ class TestOutput(UnitTest):
 
 class TestGet(UnitTest):
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
+    def test_get__url(self, mock_get):
+        response = get("/success/", "param=test")
+        mock_get.assert_called()
+        assert response._url == API_URL + "/success/data.json?param=test" 
+
+    @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__successful_response(self, mock_get):
         error_message = f"response is not an instance of {Output}"
         response = get("/success/", "")
+        mock_get.assert_called()
         assert isinstance(response, Output), error_message
 
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
@@ -70,7 +78,11 @@ class TestGet(UnitTest):
         with pytest.raises(RequestError):
             get("/error/", "")
 
+        mock_get.assert_called()
+
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__not_found_response(self, mock_get):
         with pytest.raises(RequestError):
             get("/notfound/", "")
+
+        mock_get.assert_called()

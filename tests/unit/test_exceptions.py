@@ -1,9 +1,11 @@
 import pytest
 
+from . import UnitTest
+
 from rsaw.exceptions import RSAWException, RequestError, ResponseError
 
 
-class TestRSAWException:
+class TestRSAWException(UnitTest):
     def test_inheritance(self):
         assert issubclass(RSAWException, Exception)
 
@@ -13,7 +15,7 @@ class TestRSAWException:
             raise exception
 
 
-class TestRequestError:
+class TestRequestError(UnitTest):
     def test_inheritance(self):
         assert issubclass(RequestError, RSAWException)
 
@@ -23,7 +25,7 @@ class TestRequestError:
             raise exception
 
 
-class TestResponseError:
+class TestResponseError(UnitTest):
     def test_inheritance(self):
         assert issubclass(ResponseError, RSAWException)
 
