@@ -74,6 +74,10 @@ class AnnouncedPrefixes:
 
         self._api = RIPEstat._get(AnnouncedPrefixes.PATH, params)
 
+    def __getitem__(self, index):
+        """Get a specific index of the returned anncouned prefixes."""
+        return self.prefixes[index]
+
     def __iter__(self):
         """
         Provide a way to iterate over announced prefixes.
@@ -89,12 +93,7 @@ class AnnouncedPrefixes:
                 print(announced_prefix.prefix, announced_prefix.timelines)
 
         """
-        for prefix in self.prefixes:
-            yield prefix
-
-    def __getitem__(self, index):
-        """Get a specific index of the returned anncouned prefixes."""
-        return self.prefixes[index]
+        return self.prefixes.__iter__()
 
     def __len__(self):
         """
