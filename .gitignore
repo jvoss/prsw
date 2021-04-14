@@ -1,2 +1,4 @@
+*.egg-info
 __pycache__/
 _build/
+pip-wheel-metadata/

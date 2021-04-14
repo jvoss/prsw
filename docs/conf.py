@@ -8,7 +8,7 @@ sys.path.insert(1, "..")
 from rsaw import __version__
 
 project = "RSAW"
-copyright = datetime.today().strftime("%Y")
+copyright = datetime.today().strftime("%Y, Jonathan P. Voss")
 author = "Jonathan P. Voss"
 release = __version__
 version = ".".join(__version__.split(".", 2)[:2])
