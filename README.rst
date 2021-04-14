@@ -76,7 +76,7 @@ Acknowledgements
 ----------------
 
 Inspiration for several elements of this project came from 
-`PRAW <https://github.com/praw-dev/praw>`_.
+`PRAW <https://github.com/praw-dev/praw>`_, the Python Reddit API Wrapper.
 
 License
 -------
