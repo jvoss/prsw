@@ -65,24 +65,6 @@ class LookingGlass:
         self._api = RIPEstat._get(LookingGlass.PATH, params)
         self._rrcs = self._objectify_rrcs(self._api.data["rrcs"])
 
-    def __iter__(self):
-        """
-        Provide a way to iterate over each collector node (RRC).
-
-        .. code-block:: python
-
-            import rsaw
-
-            ripe = rsaw.RIPEstat()
-            rrcs = ripe.looking_glass('140.78.0.0/16')
-
-            for collector in rrcs:
-                print(collector.rrc, collector.location, collector.peers)
-
-        """
-        for collector in self.rrcs:
-            yield collector
-
     def __getitem__(self, rrc):
         """
         Return the collector node specified.
@@ -101,9 +83,24 @@ class LookingGlass:
                 print(peer.as_path)
 
         """
-        for v in self.rrcs:
-            if v.rrc == rrc:
-                return v
+        return self.rrcs[rrc]
+
+    def __iter__(self):
+        """
+        Provide a way to iterate over each collector node (RRC).
+
+        .. code-block:: python
+
+            import rsaw
+
+            ripe = rsaw.RIPEstat()
+            rrcs = ripe.looking_glass('140.78.0.0/16')
+
+            for collector in rrcs:
+                print(collector.rrc, collector.location, collector.peers)
+
+        """
+        return self.rrcs.__iter__()
 
     def __len__(self):
         """
@@ -119,12 +116,12 @@ class LookingGlass:
             print(len(rrcs))
 
         """
-        return len(self.rrcs())
+        return len(self.rrcs)
 
     def _objectify_rrcs(self, list):
         """Processes RRCs from API response."""
 
-        rrcs = []
+        rrcs = {}
 
         RRC = namedtuple("RRC", ["rrc", "location", "peers"])
         Peer = namedtuple(
@@ -147,8 +144,6 @@ class LookingGlass:
 
             # repack peers with python objects
             for peer in rrc["peers"]:
-                peer = peer.copy()
-
                 peer["asn_origin"] = int(peer["asn_origin"])
                 peer["as_path"] = tuple(map(int, peer["as_path"].split(" ")))
                 peer["community"] = str(peer["community"]).split(" ")
@@ -162,7 +157,7 @@ class LookingGlass:
                 peers.append(Peer(**peer))
 
             rrc["peers"] = peers
-            rrcs.append(RRC(**rrc))
+            rrcs[rrc["rrc"]] = RRC(**rrc)
 
         return rrcs
 
@@ -194,7 +189,7 @@ class LookingGlass:
         """
         peers = []
 
-        for rrc in self.rrcs:
+        for rrc in self.rrcs.values():
             peers += rrc.peers
 
         return peers
