@@ -11,67 +11,67 @@ jobs:
     name: black
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: 3.x
-    - uses: actions/cache@v1
-      with:
-        key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
-        path: ~/.cache/pip
-        restore-keys: |
-          v0-${{ runner.os }}-pip-lint-
-          v0-${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install .[lint]
-    - name: Run black
-      run: black --check --verbose --exclude docs .
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v1
+        with:
+          key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
+          path: ~/.cache/pip
+          restore-keys: |
+            v0-${{ runner.os }}-pip-lint-
+            v0-${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[lint]
+      - name: Run black
+        run: black --check --verbose --exclude docs .
 
   flake8:
     name: flake8
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: 3.x
-    - uses: actions/cache@v1
-      with:
-        key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
-        path: ~/.cache/pip
-        restore-keys: |
-          v0-${{ runner.os }}-pip-lint-
-          v0-${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install .[lint]
-    - name: Run flake8
-      run: flake8 --exclude docs
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v1
+        with:
+          key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
+          path: ~/.cache/pip
+          restore-keys: |
+            v0-${{ runner.os }}-pip-lint-
+            v0-${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[lint]
+      - name: Run flake8
+        run: flake8 --exclude docs
 
   pydocstyle:
     name: pydocstyle
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: 3.x
-    - uses: actions/cache@v1
-      with:
-        key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
-        path: ~/.cache/pip
-        restore-keys: |
-          v0-${{ runner.os }}-pip-lint-
-          v0-${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install .[lint]
-    - name: Run pydocstyle
-      run: pydocstyle rsaw
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v1
+        with:
+          key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
+          path: ~/.cache/pip
+          restore-keys: |
+            v0-${{ runner.os }}-pip-lint-
+            v0-${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[lint]
+      - name: Run pydocstyle
+        run: pydocstyle rsaw
 
 sphinx:
   name: sphinx
