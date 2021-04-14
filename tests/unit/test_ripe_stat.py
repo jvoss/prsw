@@ -59,7 +59,7 @@ class TestRIPEstat(UnitTest):
         response = ripestat._get("/test/", "")
 
         mock_get.assert_called()
-        assert f"data_overload_limit=ignore" in response._url
+        assert "data_overload_limit=ignore" in response._url
 
     def test_announced_prefixes(self):
         assert self.ripestat.announced_prefixes.func == AnnouncedPrefixes
