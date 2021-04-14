@@ -1,21 +1,13 @@
+"""Base RIPEstat API interactions."""
+
 import datetime
 import requests
 
 from typing import Optional
 
+from .exceptions import RequestError, ResponseError
+
 API_URL = "https://stat.ripe.net/data"
-
-
-class RequestError(Exception):
-    """Error class for wrapping request errors."""
-
-    pass
-
-
-class ResponseError(Exception):
-    """Error class for wrapping API response errors."""
-
-    pass
 
 
 class Output:
