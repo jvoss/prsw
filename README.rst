@@ -72,6 +72,12 @@ Contributing
 
 Contributions are encouraged. Please see `CONTRIBUTING <CONTRIBUTING.rst>`_ for details.
 
+Acknowledgements
+----------------
+
+Inspiration for several elements of this project came from 
+`PRAW <https://github.com/praw-dev/praw>`_.
+
 License
 -------
 
