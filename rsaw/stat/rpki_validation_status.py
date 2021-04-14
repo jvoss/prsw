@@ -33,10 +33,10 @@ class RPKIValidationStatus:
 
         for roa in result.validating_roas:
             # ROA(
-            #   origin='3333', 
-            #   prefix=IPv4Network('193.0.0.0/21'), 
-            #   validity='valid', 
-            #   source='RIPE NCC RPKI Root', 
+            #   origin='3333',
+            #   prefix=IPv4Network('193.0.0.0/21'),
+            #   validity='valid',
+            #   source='RIPE NCC RPKI Root',
             #   max_length=21
             # )
 

@@ -37,9 +37,9 @@ class AnnouncedPrefixes:
 
         for network in prefixes:
             # AnnouncedPrefix(
-            #   prefix=IPv4Network('193.0.0.0/21'), 
+            #   prefix=IPv4Network('193.0.0.0/21'),
             #   timelines=[
-            #       {'starttime': datetime.datetime(2021, 3, 31, 8, 0)}, 
+            #       {'starttime': datetime.datetime(2021, 3, 31, 8, 0)},
             #       {'endtime': datetime.datetime(2021, 4, 14, 8, 0)}
             #   ]
             # )
