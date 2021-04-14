@@ -1,7 +1,7 @@
 import argparse
 import ipaddress
-import rsaw
 
+import rsaw
 
 def args():
     parser = argparse.ArgumentParser()
