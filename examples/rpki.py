@@ -3,6 +3,7 @@ import ipaddress
 
 import rsaw
 
+
 def args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
