@@ -1,6 +1,10 @@
 PRSW: Python RIPE Stat Wrapper
 ==============================
 
+.. image:: https://img.shields.io/pypi/v/prsw.svg
+    :alt: Latest Version
+    :target: https://pypi.python.org/pypi/prsw
+
 .. image:: https://github.com/jvoss/prsw/actions/workflows/tests.yml/badge.svg
   :alt: GitHub Actions Tests
   :target: https://github.com/jvoss/prsw/actions/workflows/tests.yml
