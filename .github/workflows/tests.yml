@@ -64,8 +64,8 @@ jobs:
     - env:
         COVERALLS_PARALLEL: true
         COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      name: Submit to coveralls
-      run: coveralls
+      # name: Submit to coveralls
+      # run: coveralls
     # - name: Check coverage
     #   run: coverage report -m --fail-under=100
     strategy:
