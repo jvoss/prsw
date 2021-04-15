@@ -43,7 +43,7 @@ class RPKIValidationStatus:
             print(roa.origin, roa.prefix, roa.validity, roa.source)
     """
 
-    PATH = "/rpki-validation/"
+    PATH = "/rpki-validation"
     VERSION = "0.2"
 
     def __init__(

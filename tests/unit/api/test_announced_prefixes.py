@@ -1,4 +1,4 @@
-"""Test rsaw.api.announced_prefixes."""
+"""Test rsaw.stat.announced_prefixes."""
 
 import pytest
 import ipaddress
