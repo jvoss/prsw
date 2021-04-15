@@ -1,4 +1,4 @@
-"""Test rsaw.stat.rpki_validation_status."""
+"""Test prsw.stat.rpki_validation_status."""
 
 import pytest
 from ipaddress import IPv4Network
@@ -7,8 +7,8 @@ from unittest.mock import patch
 
 from .. import UnitTest
 
-from rsaw.api import API_URL, Output
-from rsaw.stat.rpki_validation_status import RPKIValidationStatus
+from prsw.api import API_URL, Output
+from prsw.stat.rpki_validation_status import RPKIValidationStatus
 
 
 class TestRPKIValidationStatus(UnitTest):

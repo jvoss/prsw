@@ -1,9 +1,8 @@
-RSAW: RIPE Stat API Wrapper
-===================================
+PRSW: Python RIPE Stat Wrapper
+==============================
 
-RSAW, the RIPE Stat API Wrapper, is a Python package that allows for simple 
+PRSW, the RIPE Stat Wrapper, is a Python package that allows for simple 
 access to the `RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
-Colloquially can be thought of as "R[IPE] Saw", as in 'what did RIPE see?'
 
 .. _getting_started:
 

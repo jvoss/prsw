@@ -30,8 +30,8 @@ def run_linters():
     """Runs all linters."""
     success = True
     success &= run("black --check .")
-    success &= run("flake8 --exclude docs rsaw tests")
-    success &= run("pydocstyle rsaw")
+    success &= run("flake8 --exclude docs prsw tests")
+    success &= run("pydocstyle prsw")
     return success
 
 

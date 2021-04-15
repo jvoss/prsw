@@ -1,13 +1,13 @@
 import sys
 from datetime import datetime
 
-# Use local RSAW over any global package
+# Use local PRSW over any global package
 sys.path.insert(0, ".")
 sys.path.insert(1, "..")
 
-from rsaw import __version__
+from prsw import __version__
 
-project = "RSAW"
+project = "PRSW"
 copyright = datetime.today().strftime("%Y, Jonathan P. Voss")
 author = "Jonathan P. Voss"
 release = __version__

@@ -1,4 +1,4 @@
-"""Test rsaw.api.looking_glass."""
+"""Test prsw.api.looking_glass."""
 
 import pytest
 from datetime import datetime
@@ -7,8 +7,8 @@ from unittest.mock import patch
 
 from .. import UnitTest
 
-from rsaw.api import API_URL, Output
-from rsaw.stat.looking_glass import LookingGlass
+from prsw.api import API_URL, Output
+from prsw.stat.looking_glass import LookingGlass
 
 
 class TestLookingGlass(UnitTest):

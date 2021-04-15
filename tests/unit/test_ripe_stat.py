@@ -3,15 +3,15 @@ from unittest import mock
 
 from . import UnitTest
 
-from rsaw import RIPEstat
-from rsaw.stat.rpki_validation_status import RPKIValidationStatus
-from rsaw.stat.looking_glass import LookingGlass
-from rsaw.stat.announced_prefixes import AnnouncedPrefixes
+from prsw import RIPEstat
+from prsw.stat.rpki_validation_status import RPKIValidationStatus
+from prsw.stat.looking_glass import LookingGlass
+from prsw.stat.announced_prefixes import AnnouncedPrefixes
 
 
 class TestRIPEstat(UnitTest):
     def mocked_get(*args):
-        """Mock rsaw.api.get()"""
+        """Mock prsw.api.get()"""
 
         class MockOutputResponse:
             def __init__(self, path, params):
@@ -38,7 +38,7 @@ class TestRIPEstat(UnitTest):
         with pytest.raises(ValueError):
             RIPEstat(data_overload_limit="invalid-parameter")
 
-    @mock.patch("rsaw.ripe_stat.get", side_effect=mocked_get)
+    @mock.patch("prsw.ripe_stat.get", side_effect=mocked_get)
     def test__get_with_sourceapp(self, mock_get):
         app = "under-test"
         ripestat = RIPEstat(sourceapp=app)
@@ -48,7 +48,7 @@ class TestRIPEstat(UnitTest):
         mock_get.assert_called()
         mock_get.assert_called_with("/test", {"sourceapp": app})
 
-    @mock.patch("rsaw.ripe_stat.get", side_effect=mocked_get)
+    @mock.patch("prsw.ripe_stat.get", side_effect=mocked_get)
     def test__get_with_data_overload_limit(self, mock_get):
         ripestat = RIPEstat(data_overload_limit="ignore")
         print("debug: " + ripestat.sourceapp)

@@ -30,9 +30,9 @@ class AnnouncedPrefixes:
 
     .. code-block:: python
 
-        import rsaw
+        import prsw
 
-        ripe = rsaw.RIPEstat()
+        ripe = prsw.RIPEstat()
         prefixes = ripe.announced_prefixes(3333)
 
         for network in prefixes:
@@ -96,9 +96,9 @@ class AnnouncedPrefixes:
 
         .. code-block:: python
 
-            import rsaw
+            import prsw
 
-            ripe = rsaw.RIPEstat()
+            ripe = prsw.RIPEstat()
             prefixes = ripe.announced_prefixes(3333)
 
             for announced_prefix in prefixes:
@@ -113,9 +113,9 @@ class AnnouncedPrefixes:
 
         .. code-block:: python
 
-            import rsaw
+            import prsw
 
-            ripe = rsaw.RIPEstat()
+            ripe = prsw.RIPEstat()
             prefixes = ripe.announced_prefixes(3333)
 
             print(len(prefixes))

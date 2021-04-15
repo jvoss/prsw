@@ -1,7 +1,7 @@
 import argparse
 import ipaddress
 
-import rsaw
+import prsw
 
 
 def args():
@@ -36,7 +36,7 @@ def args():
 def main():
     # Parse arguments
     cli = args()
-    ripe = rsaw.RIPEstat()
+    ripe = prsw.RIPEstat()
 
     # Pull all prefixes for an ASN if needed
     if not cli.prefix:

@@ -1,4 +1,4 @@
-"""Test rsaw.stat.announced_prefixes."""
+"""Test prsw.stat.announced_prefixes."""
 
 import pytest
 import ipaddress
@@ -8,8 +8,8 @@ from unittest.mock import patch
 
 from .. import UnitTest
 
-from rsaw.api import API_URL, Output
-from rsaw.stat.announced_prefixes import AnnouncedPrefixes
+from prsw.api import API_URL, Output
+from prsw.stat.announced_prefixes import AnnouncedPrefixes
 
 
 class TestAnnouncedPrefixes(UnitTest):

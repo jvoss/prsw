@@ -1,46 +1,46 @@
-RSAW: RIPE Stat API Wrapper
-===========================
+PRSW: Python RIPE Stat Wrapper
+==============================
 
-.. image:: https://github.com/jvoss/rsaw/actions/workflows/tests.yml/badge.svg
+.. image:: https://github.com/jvoss/prsw/actions/workflows/tests.yml/badge.svg
   :alt: GitHub Actions Tests
-  :target: https://github.com/jvoss/rsaw/actions/workflows/tests.yml
+  :target: https://github.com/jvoss/prsw/actions/workflows/tests.yml
 
-.. image:: https://coveralls.io/repos/github/jvoss/rsaw/badge.svg?branch=master
+.. image:: https://coveralls.io/repos/github/jvoss/prsw/badge.svg?branch=master
   :alt: Coveralls
-  :target: https://coveralls.io/github/jvoss/rsaw?branch=master
+  :target: https://coveralls.io/github/jvoss/prsw?branch=master
 
-RSAW, the RIPE Stat API Wrapper, is a Python package that allows for simple access to 
+PRSW, the RIPE Stat Wrapper, is a Python package that allows for simple access to 
 the `RIPEstat Data API <https://stat.ripe.net/docs/data_api>`_. 
 
 Installation
 ------------
 
-RSAW is supported on Python 3.6+ and can be installed via 
+PRSW is supported on Python 3.6+ and can be installed via 
 `pip <https://pypi.python.org/pypi/pip>`_.
 
 .. code-block:: bash
 
-  pip install rsaw
+  pip install prsw
 
 To install the latest development version run the following instead:
 
 .. code-block:: bash
 
-  pip install --upgrade https://github.com/jvoss/rsaw/archive/master.zip
+  pip install --upgrade https://github.com/jvoss/prsw/archive/master.zip
 
 Quickstart
 ----------
 
 RIPEstat can be instantiated with a few options. For details see the
-documentation at `<https://rsaw.readthedocs.io>`_.
+documentation at `<https://prsw.readthedocs.io>`_.
 
 To instantiate a basic instance of RIPEstat:
 
 .. code-block:: python
 
-  import rsaw
+  import prsw
 
-  ripe = rsaw.RIPEstat()
+  ripe = prsw.RIPEstat()
 
 With the `ripe` instance you can interact with the RIPEstat API:
 
@@ -69,7 +69,7 @@ With the `ripe` instance you can interact with the RIPEstat API:
   # Check RPKI validation status
   print(ripe.rpki_validation_status(3333, '193.0.0.0/21').status)
 
-Please see the `documentation <https://rsaw.readthedocs.io/>`_ for more options.
+Please see the `documentation <https://prsw.readthedocs.io/>`_ for more options.
 
 Contributing
 ------------
@@ -85,4 +85,4 @@ Inspiration for several elements of this project came from
 License
 -------
 
-RSAW is licened under the `Simplified BSD License <LICENSE.txt>`_.
+PRSW is licened under the `Simplified BSD License <LICENSE.txt>`_.

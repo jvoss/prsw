@@ -14,14 +14,14 @@ class RIPEstat:
     The RIPEstat class provides a convenient way to access the RIPEstat public API.
 
     Instances of this class are the gateway to interacting with RIPE's stat API
-    through RSAW. **If you have a `sourceapp` parameter from RIPE, see `__init__`
+    through PRSW. **If you have a `sourceapp` parameter from RIPE, see `__init__`
     documentation for details.**
 
     .. code-block:: python
 
-        import rsaw
+        import prsw
 
-        ripe = rsaw.RIPEstat()
+        ripe = prsw.RIPEstat()
 
     """
 

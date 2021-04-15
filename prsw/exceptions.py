@@ -1,13 +1,13 @@
-"""RSAW exception classes."""
+"""PRSW exception classes."""
 
 
-class RSAWException(Exception):
+class PRSWException(Exception):
     """Base Exception that all over exceptions extend."""
 
 
-class RequestError(RSAWException):
+class RequestError(PRSWException):
     """Error class for wrapping request errors."""
 
 
-class ResponseError(RSAWException):
+class ResponseError(PRSWException):
     """Error class for wrapping API response errors."""
