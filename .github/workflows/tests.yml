@@ -7,6 +7,14 @@ on:
   pull_request:
 
 jobs:
+  coveralls:
+    needs: test-multi-python
+    runs-on: ubuntu-latest
+    steps:
+    - uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
   test-multi-os:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
