@@ -3,7 +3,7 @@
 import re
 from os import path
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 PACKAGE_NAME = "prsw"
 PATH = path.abspath(path.dirname(__file__))
@@ -54,6 +54,7 @@ setup(
     keywords="RIPE RIPEStat api wrapper",
     license="Simplified BSD License",
     long_description=README,
+    packages=find_packages(exclude=["tests", "tests.*", "tools", "tools.*"]),
     project_urls={
         "Documentation": "https://prsw.readthedocs.io/",
         "Issue Tracker": "https://github.com/jvoss/prsw/issues",
