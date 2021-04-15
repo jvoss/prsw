@@ -1,5 +1,16 @@
-*.egg-info
-.pytest_cache
-__pycache__/
+*.egg
+*.egg-info/
+*.eggs/
+*.pyc
+.cache/
+.coverage
+.pytest_cache/
+.tox/
 _build/
-pip-wheel-metadata/
+__pycache__/
+build/
+dist/
+
+# common venv idioms
+.venv/
+venv/
