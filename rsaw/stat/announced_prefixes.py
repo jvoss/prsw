@@ -61,22 +61,24 @@ class AnnouncedPrefixes:
     ):
         """Initialize and request Announced Prefixes."""
 
-        params = f"preferred_version={AnnouncedPrefixes.VERSION}&"
-        params += "resource=" + str(resource)
+        params = {
+            "preferred_version": AnnouncedPrefixes.VERSION,
+            "resource": str(resource),
+        }
 
         if starttime:
             if isinstance(starttime, datetime.datetime):
-                params += "&starttime=" + str(starttime)
+                params["starttime"] = str(starttime)
             else:
                 raise ValueError("starttime expected to be datetime")
         if endtime:
             if isinstance(endtime, datetime.datetime):
-                params += "&endtime=" + str(endtime)
+                params["enddtime"] = str(endtime)
             else:
                 raise ValueError("endtime expected to be datetime")
         if min_peers_seeing:
             if isinstance(min_peers_seeing, int):
-                params += "&min_peers_seeing=" + str(min_peers_seeing)
+                params["min_peers_seeing"] = str(min_peers_seeing)
             else:
                 raise ValueError("min_peers_seeing expected to be int")
 

@@ -62,27 +62,27 @@ class TestOutput(UnitTest):
 class TestGet(UnitTest):
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__url(self, mock_get):
-        response = get("/success/", "param=test")
+        response = get("/success/", {"param": "test"})
         mock_get.assert_called()
         assert response._url == API_URL + "/success/data.json?param=test"
 
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__successful_response(self, mock_get):
         error_message = f"response is not an instance of {Output}"
-        response = get("/success/", "")
+        response = get("/success/")
         mock_get.assert_called()
         assert isinstance(response, Output), error_message
 
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__error_response(self, mock_get):
         with pytest.raises(RequestError):
-            get("/error/", "")
+            get("/error/")
 
         mock_get.assert_called()
 
     @mock.patch("requests.get", side_effect=TestApi.mocked_get)
     def test_get__not_found_response(self, mock_get):
         with pytest.raises(RequestError):
-            get("/notfound/", "")
+            get("/notfound/")
 
         mock_get.assert_called()

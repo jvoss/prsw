@@ -57,8 +57,11 @@ class RPKIValidationStatus:
         # validate and sanitize prefix (ensure is proper boundary)
         prefix = ipaddress.ip_network(prefix, strict=False)
 
-        params = f"preferred_version={RPKIValidationStatus.VERSION}&"
-        params += "resource=" + str(resource) + "&prefix=" + str(prefix)
+        params = {
+            "preferred_version": RPKIValidationStatus.VERSION,
+            "resource": str(resource),
+            "prefix": str(prefix),
+        }
 
         self._api = RIPEstat._get(RPKIValidationStatus.PATH, params)
 

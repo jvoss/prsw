@@ -72,8 +72,7 @@ class LookingGlass:
         # validate and sanitize prefix (ensure proper boundary)
         resource = ipaddress.ip_network(str(resource), strict=False)
 
-        params = f"preferred_version={LookingGlass.VERSION}&"
-        params += "resource=" + str(resource)
+        params = {"preferred_version": LookingGlass.VERSION, "resource": str(resource)}
 
         self._api = RIPEstat._get(LookingGlass.PATH, params)
         self._rrcs = self._objectify_rrcs(self._api.data["rrcs"])
