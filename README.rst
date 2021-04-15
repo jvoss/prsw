@@ -9,6 +9,10 @@ PRSW: Python RIPE Stat Wrapper
   :alt: Coveralls
   :target: https://coveralls.io/github/jvoss/prsw?branch=master
 
+.. image:: https://readthedocs.org/projects/prsw/badge/?version=latest
+  :target: https://prsw.readthedocs.io/en/latest/?badge=latest
+  :alt: Documentation Status
+
 PRSW, the RIPE Stat Wrapper, is a Python package that allows for simple access to 
 the `RIPEstat Data API <https://stat.ripe.net/docs/data_api>`_. 
 
