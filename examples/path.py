@@ -1,7 +1,7 @@
 import argparse
 import ipaddress
 
-import rsaw
+import prsw
 
 
 def args():
@@ -37,7 +37,7 @@ def args():
 def main():
     # Parse arguments
     cli = args()
-    ripe = rsaw.RIPEstat()
+    ripe = prsw.RIPEstat()
 
     paths = {}
     prefixes = []

@@ -3,8 +3,8 @@ from unittest import mock
 
 from . import UnitTest
 
-from rsaw.api import get, Output, API_URL
-from rsaw.exceptions import RequestError, ResponseError
+from prsw.api import get, Output, API_URL
+from prsw.exceptions import RequestError, ResponseError
 
 
 class TestApi(UnitTest):

@@ -1,38 +1,38 @@
 Installation
 ============
 
-RSAW requires Python 3.6+. The easiest way to install RSAW is via ``pip``.
+PRSW requires Python 3.6+. The easiest way to install PRSW is via ``pip``.
 
 .. code-block:: bash
 
-  pip install rsaw
+  pip install prsw
 
 .. note::
 
   Depending on your system, you may need to use ``pip3`` to install packages for
   Python 3.
 
-Updating RSAW
+Updating PRSW
 -------------
 
-RSAW can be updated by running:
+PRSW can be updated by running:
 
 .. code-block:: bash
 
-  pip install --upgrade rsaw
+  pip install --upgrade PRSW
 
 Installing Specific Versions
 ----------------------------
 
-Specific versions of RSAW can be installed by specifying a version number:
+Specific versions of PRSW can be installed by specifying a version number:
 
 .. code-block:: bash
 
-  pip install rsaw==0.0.1
+  pip install prsw==0.1.0
 
 Installing the Latest Development Version
 -----------------------------------------
 
 .. code-block:: bash
 
-  pip install --upgrade https://github.com/jvoss/rsaw/archive/master.zip
+  pip install --upgrade https://github.com/jvoss/prsw/archive/master.zip

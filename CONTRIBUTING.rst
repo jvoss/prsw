@@ -10,7 +10,7 @@ Fork and clone the repo:
 
 .. code:: bash
 
-  $ git clone git@github.com:your-username/rsaw.git
+  $ git clone git@github.com:your-username/prsw.git
 
 Make your changes and include tests for your change.
 
@@ -33,4 +33,4 @@ Please follow these simple guidelines:
 
 .. _Code of Conduct: https://www.python.org/psf/codeofconduct/
 .. _PEP 8: https://www.python.org/dev/peps/pep-0008/
-.. _submit a pull request:  https://github.com/jvoss/rsaw/compare/
+.. _submit a pull request:  https://github.com/jvoss/prsw/compare/

@@ -24,9 +24,9 @@ class RPKIValidationStatus:
 
     .. code-block:: python
 
-        import rsaw
+        import prsw
 
-        ripe = rsaw.RIPEstat()
+        ripe = prsw.RIPEstat()
         result = ripe.rpki_validation_status(3333, '193.0.0.0/21')
 
         print(result.status)

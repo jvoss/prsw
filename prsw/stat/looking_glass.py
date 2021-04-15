@@ -28,9 +28,9 @@ class LookingGlass:
 
     .. code-block:: python
 
-        import rsaw
+        import prsw
 
-        ripe = rsaw.RIPEstat()
+        ripe = prsw.RIPEstat()
         result = ripe.looking_glass('140.78.0.0/16')
 
         for collector in result:
@@ -83,9 +83,9 @@ class LookingGlass:
 
         .. code-block:: python
 
-            import rsaw
+            import prsw
 
-            ripe = rsaw.RIPEstat()
+            ripe = prsw.RIPEstat()
             rrcs = ripe.looking_glass('140.78.0.0/16')
 
             rrc = rrcs['RRC00']
@@ -103,9 +103,9 @@ class LookingGlass:
 
         .. code-block:: python
 
-            import rsaw
+            import prsw
 
-            ripe = rsaw.RIPEstat()
+            ripe = prsw.RIPEstat()
             rrcs = ripe.looking_glass('140.78.0.0/16')
 
             for collector in rrcs:
@@ -121,9 +121,9 @@ class LookingGlass:
 
         .. code-block:: python
 
-            import rsaw
+            import prsw
 
-            ripe = rsaw.RIPEstat()
+            ripe = prsw.RIPEstat()
             rrcs = ripe.looking_glass('140.78.0.0/16')
 
             print(len(rrcs))
@@ -193,9 +193,9 @@ class LookingGlass:
 
         .. code-block:: python
 
-            import rsaw
+            import prsw
 
-            ripe = rsaw.RIPEstat()
+            ripe = prsw.RIPEstat()
             rrcs = ripe.looking_glass('140.78.0.0/16')
 
             for peer in rrcs.peers:

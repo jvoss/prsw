@@ -2,22 +2,22 @@ import pytest
 
 from . import UnitTest
 
-from rsaw.exceptions import RSAWException, RequestError, ResponseError
+from prsw.exceptions import PRSWException, RequestError, ResponseError
 
 
-class TestRSAWException(UnitTest):
+class TestPRSWException(UnitTest):
     def test_inheritance(self):
-        assert issubclass(RSAWException, Exception)
+        assert issubclass(PRSWException, Exception)
 
     def test_catch(self):
-        exception = RSAWException("test message")
-        with pytest.raises(RSAWException):
+        exception = PRSWException("test message")
+        with pytest.raises(PRSWException):
             raise exception
 
 
 class TestRequestError(UnitTest):
     def test_inheritance(self):
-        assert issubclass(RequestError, RSAWException)
+        assert issubclass(RequestError, PRSWException)
 
     def test_catch(self):
         exception = RequestError("test message")
@@ -27,7 +27,7 @@ class TestRequestError(UnitTest):
 
 class TestResponseError(UnitTest):
     def test_inheritance(self):
-        assert issubclass(ResponseError, RSAWException)
+        assert issubclass(ResponseError, PRSWException)
 
     def test_catch(self):
         exception = ResponseError("test message")

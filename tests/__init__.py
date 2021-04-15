@@ -1,1 +1,1 @@
-"""RSAW test suite."""
+"""PRSW test suite."""

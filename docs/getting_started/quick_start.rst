@@ -5,9 +5,9 @@ Instantiate a basic instance of RIPEstat:
 
 .. code-block:: python
 
-  import rsaw
+  import prsw
 
-  ripe = rsaw.RIPEstat()
+  ripe = prsw.RIPEstat()
 
 ``sourceapp``
 -------------
@@ -19,7 +19,7 @@ for details.
 
 .. code-block:: python
 
-  ripe = rsaw.RIPEstat(sourceapp='YourId')
+  ripe = prsw.RIPEstat(sourceapp='YourId')
 
 ``data_overload_limit``
 -----------------------
@@ -31,7 +31,7 @@ disable.
 
 .. code-block:: python
 
-  ripe = rsaw.RIPEstat(data_overload_limit='ignore')
+  ripe = prsw.RIPEstat(data_overload_limit='ignore')
   
 Usage examples
 --------------
