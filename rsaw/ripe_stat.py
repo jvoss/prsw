@@ -66,12 +66,14 @@ class RIPEstat:
         else:
             raise ValueError("data_overload_limit expected 'ignore' or blank string")
 
-    def _get(self, path, params):
+    def _get(self, path, params=None):
         """Retrieve the requested path with parameters as GET from the API."""
+        params = {} if params is None else params
+
         if self.data_overload_limit:
-            params += "&data_overload_limit=ignore"
+            params["data_overload_limit"] = "ignore"
         if self.sourceapp:
-            params += f"&sourceapp={self.sourceapp}"
+            params["sourceapp"] = self.sourceapp
 
         return get(path, params)
 

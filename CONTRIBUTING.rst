@@ -14,6 +14,15 @@ Fork and clone the repo:
 
 Make your changes and include tests for your change.
 
+Run the static analysis tools locally to help ensure it fits within the
+project expectations:
+
+.. code:: bash
+
+  $ python pre_push.py
+
+  pre_push.py: Success!
+
 Push your fork and `submit a pull request`_.
 
 Please follow these simple guidelines:

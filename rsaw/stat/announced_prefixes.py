@@ -39,8 +39,10 @@ class AnnouncedPrefixes:
             # AnnouncedPrefix(
             #   prefix=IPv4Network('193.0.0.0/21'),
             #   timelines=[
-            #       {'starttime': datetime.datetime(2021, 3, 31, 8, 0)},
-            #       {'endtime': datetime.datetime(2021, 4, 14, 8, 0)}
+            #       Timeline(
+            #           starttime=datetime.datetime(2021, 3, 31, 8, 0),
+            #           endtime=datetime.datetime(2021, 4, 14, 8, 0)
+            #       )
             #   ]
             # )
 
@@ -48,7 +50,7 @@ class AnnouncedPrefixes:
 
     """
 
-    PATH = "/announced-prefixes/"
+    PATH = "/announced-prefixes"
     VERSION = "1.2"
 
     def __init__(
@@ -61,22 +63,24 @@ class AnnouncedPrefixes:
     ):
         """Initialize and request Announced Prefixes."""
 
-        params = f"preferred_version={AnnouncedPrefixes.VERSION}&"
-        params += "resource=" + str(resource)
+        params = {
+            "preferred_version": AnnouncedPrefixes.VERSION,
+            "resource": str(resource),
+        }
 
         if starttime:
-            if isinstance(starttime, datetime.datetime):
-                params += "&starttime=" + str(starttime)
+            if isinstance(starttime, datetime):
+                params["starttime"] = starttime.isoformat()
             else:
                 raise ValueError("starttime expected to be datetime")
         if endtime:
-            if isinstance(endtime, datetime.datetime):
-                params += "&endtime=" + str(endtime)
+            if isinstance(endtime, datetime):
+                params["endtime"] = endtime.isoformat()
             else:
                 raise ValueError("endtime expected to be datetime")
         if min_peers_seeing:
             if isinstance(min_peers_seeing, int):
-                params += "&min_peers_seeing=" + str(min_peers_seeing)
+                params["min_peers_seeing"] = str(min_peers_seeing)
             else:
                 raise ValueError("min_peers_seeing expected to be int")
 
@@ -134,14 +138,17 @@ class AnnouncedPrefixes:
         """A list of all announced prefixes + the timelines when they were visible."""
         prefixes = []
         AnnouncedPrefix = namedtuple("AnnouncedPrefix", ["prefix", "timelines"])
+        Timeline = namedtuple("Timeline", ["starttime", "endtime"])
 
         for prefix in self._api.data["prefixes"]:
             ip_network = ipaddress.ip_network(prefix["prefix"], strict=False)
             timelines = []
 
             for timeline in prefix["timelines"]:
-                for key, time in timeline.items():
-                    timelines.append({key: datetime.fromisoformat(time)})
+                starttime = datetime.fromisoformat(timeline["starttime"])
+                endtime = datetime.fromisoformat(timeline["endtime"])
+
+                timelines.append(Timeline(starttime=starttime, endtime=endtime))
 
             tuple_data = {"prefix": ip_network, "timelines": timelines}
             prefixes.append(AnnouncedPrefix(**tuple_data))

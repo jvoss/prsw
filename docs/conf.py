@@ -11,7 +11,7 @@ project = "RSAW"
 copyright = datetime.today().strftime("%Y, Jonathan P. Voss")
 author = "Jonathan P. Voss"
 release = __version__
-version = ".".join(__version__.split(".", 2)[:2])
+version = ".".join(__version__.split(".", 3)[:3])
 
 exclude_patterns = []
 

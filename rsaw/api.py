@@ -51,10 +51,12 @@ class Output:
             raise ResponseError("Invalid response from API")
 
 
-def get(path, params):
+def get(path, params=None):
     """Retrieve the requested path with parameters as GET from the API."""
+    params = {} if params is None else params
+    params = "&".join("{}={}".format(k, v) for k, v in params.items())
 
-    url = API_URL + str(path) + "data.json?" + str(params)
+    url = f"{API_URL}{str(path)}/data.json?{str(params)}"
 
     try:
         response = requests.get(url)
