@@ -56,7 +56,7 @@ def get(path, params=None):
     params = {} if params is None else params
     params = "&".join("{}={}".format(k, v) for k, v in params.items())
 
-    url = API_URL + str(path) + "data.json?" + str(params)
+    url = f"{API_URL}{str(path)}/data.json?{str(params)}"
 
     try:
         response = requests.get(url)

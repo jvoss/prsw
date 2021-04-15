@@ -43,20 +43,20 @@ class TestRIPEstat(UnitTest):
         app = "under-test"
         ripestat = RIPEstat(sourceapp=app)
 
-        ripestat._get("/test/")
+        ripestat._get("/test")
 
         mock_get.assert_called()
-        mock_get.assert_called_with("/test/", {"sourceapp": app})
+        mock_get.assert_called_with("/test", {"sourceapp": app})
 
     @mock.patch("rsaw.ripe_stat.get", side_effect=mocked_get)
     def test__get_with_data_overload_limit(self, mock_get):
         ripestat = RIPEstat(data_overload_limit="ignore")
         print("debug: " + ripestat.sourceapp)
 
-        ripestat._get("/test/")
+        ripestat._get("/test")
 
         mock_get.assert_called()
-        mock_get.assert_called_with("/test/", {"data_overload_limit": "ignore"})
+        mock_get.assert_called_with("/test", {"data_overload_limit": "ignore"})
 
     def test_announced_prefixes(self):
         assert self.ripestat.announced_prefixes.func == AnnouncedPrefixes
