@@ -19,7 +19,7 @@ PRSW can be updated by running:
 
 .. code-block:: bash
 
-  pip install --upgrade PRSW
+  pip install --upgrade prsw
 
 Installing Specific Versions
 ----------------------------
