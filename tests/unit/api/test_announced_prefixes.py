@@ -19,13 +19,13 @@ class TestAnnouncedPrefixes(UnitTest):
         "version": "1.2",
         "data_call_status": "supported - connecting to ursa",
         "cached": False,
-        "query_id": "20210415024133-07410057-7e5a-41b7-bec7-98bc49aeac84",
+        "query_id": "20210415024133-07420057-7e5a-41b7-bed7-98bc59aeac84",
         "process_time": 5265,
         "server_id": "app149",
         "build_version": "live.2021.4.14.157",
         "status": "ok",
         "status_code": 200,
-        "time": "2021-04-14T14:16:02.142290",
+        "time": "2021-04-14T14:16:03.162290",
         "data": {
             "prefixes": [
                 {

@@ -64,7 +64,7 @@ class LookingGlass:
                 )
     """
 
-    PATH = "/looking-glass/"
+    PATH = "/looking-glass"
     VERSION = "2.1"
 
     def __init__(self, RIPEstat, resource: ipaddress.ip_network):
@@ -112,7 +112,8 @@ class LookingGlass:
                 print(collector.rrc, collector.location, collector.peers)
 
         """
-        return self.rrcs.__iter__()
+        for collector in self.rrcs.values():
+            yield collector
 
     def __len__(self):
         """
@@ -156,18 +157,20 @@ class LookingGlass:
 
             # repack peers with python objects
             for peer in rrc["peers"]:
-                peer["asn_origin"] = int(peer["asn_origin"])
-                peer["as_path"] = tuple(map(int, peer["as_path"].split(" ")))
-                peer["community"] = str(peer["community"]).split(" ")
-                peer["last_updated"] = datetime.fromisoformat(peer["last_updated"])
-                peer["prefix"] = ipaddress.ip_network(peer["prefix"])
-                peer["peer"] = ipaddress.ip_address(peer["peer"])
-                peer["origin"] = str(peer["origin"])
-                peer["next_hop"] = ipaddress.ip_address(peer["next_hop"])
-                peer["latest_time"] = datetime.fromisoformat(peer["latest_time"])
+                t_peer = {}
+                t_peer["asn_origin"] = int(peer["asn_origin"])
+                t_peer["as_path"] = tuple(map(int, peer["as_path"].split(" ")))
+                t_peer["community"] = str(peer["community"]).split(" ")
+                t_peer["last_updated"] = datetime.fromisoformat(peer["last_updated"])
+                t_peer["prefix"] = ipaddress.ip_network(peer["prefix"])
+                t_peer["peer"] = ipaddress.ip_address(peer["peer"])
+                t_peer["origin"] = str(peer["origin"])
+                t_peer["next_hop"] = ipaddress.ip_address(peer["next_hop"])
+                t_peer["latest_time"] = datetime.fromisoformat(peer["latest_time"])
 
-                peers.append(Peer(**peer))
+                peers.append(Peer(**t_peer))
 
+            rrc = rrc.copy()
             rrc["peers"] = peers
             rrcs[rrc["rrc"]] = RRC(**rrc)
 
@@ -181,7 +184,7 @@ class LookingGlass:
     @property
     def query_time(self):
         """Provides `datetime` on when the query was performed."""
-        return datetime.fromisoformat(self._api.data["latest_time"])
+        return datetime.fromisoformat(self._api.data["query_time"])
 
     @property
     def peers(self):
