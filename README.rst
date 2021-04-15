@@ -5,8 +5,8 @@ RSAW: RIPE Stat API Wrapper
   :alt: GitHub Actions Tests
   :target: https://github.com/jvoss/rsaw/actions/workflows/test.yml?query=branch%3Amaster
 
-RSAW is a Python package that allows for simple access to the
-`RIPEstat Data API <https://stat.ripe.net/docs/data_api>`_.
+RSAW, the RIPE Stat API Wrapper, is a Python package that allows for simple access to 
+the `RIPEstat Data API <https://stat.ripe.net/docs/data_api>`_. 
 
 Installation
 ------------
