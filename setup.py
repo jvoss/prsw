@@ -46,7 +46,7 @@ setup(
         "Topic :: Utilities",
     ],
     description=(
-        "PRSW, the `Python RIPE Stat Wrapper`, is a python package that"
+        "PRSW, the Python RIPE Stat Wrapper, is a python package that"
         " simplifies access to the RIPE Stat public data API."
     ),
     extras_require=extras,
