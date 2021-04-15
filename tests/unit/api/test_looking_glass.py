@@ -70,6 +70,10 @@ class TestLookingGlass(UnitTest):
             mock_get.assert_called()
             mock_get.assert_called_with(LookingGlass.PATH, self.params)
 
+    def test__init__invalid_resource(self):
+        with pytest.raises(ValueError):
+            LookingGlass(self.ripestat, resource="invalid-prefix")
+
     def test__getitem__(self):
         with patch.object(self.ripestat, "_get") as mock_get:
             mock_get.return_value = self.api_response
