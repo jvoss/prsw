@@ -28,24 +28,28 @@ def run(program):
 
 def run_linters():
     """Runs all linters."""
-    run("black --check .")
-    run("flake8 --exclude docs rsaw")
-    run("pydocstyle rsaw")
+    success = True
+    success &= run("black --check .")
+    success &= run("flake8 --exclude docs rsaw")
+    success &= run("pydocstyle rsaw")
+    return success
 
 
 def run_unit_tests():
     """Runs all unit tests."""
-    run("pytest")
+    success = True
+    success &= run("pytest")
+    return success
 
 
 def main():
     success = True
 
     try:
-        run_unit_tests()
-        run_linters()
+        success &= run_unit_tests()
+        success &= run_linters()
     except KeyboardInterrupt:
-        return int(not False)
+        return int(not success)
 
     return int(not success)
 
