@@ -4,9 +4,10 @@ from unittest import mock
 from . import UnitTest
 
 from prsw import RIPEstat
-from prsw.stat.rpki_validation_status import RPKIValidationStatus
-from prsw.stat.looking_glass import LookingGlass
 from prsw.stat.announced_prefixes import AnnouncedPrefixes
+from prsw.stat.looking_glass import LookingGlass
+from prsw.stat.rpki_validation_status import RPKIValidationStatus
+from prsw.stat.whats_my_ip import WhatsMyIp
 
 
 class TestRIPEstat(UnitTest):
@@ -66,3 +67,6 @@ class TestRIPEstat(UnitTest):
 
     def test_rpki_validation_status(self):
         assert self.ripestat.rpki_validation_status.func == RPKIValidationStatus
+
+    def test_whats_my_ip(self):
+        assert self.ripestat.whats_my_ip.func == WhatsMyIp

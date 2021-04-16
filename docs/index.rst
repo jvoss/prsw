@@ -22,6 +22,7 @@ access to the `RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
     api/announced_prefixes
     api/looking_glass
     api/rpki_validation_status
+    api/whats_my_ip
 
 .. _tutorial:
 
