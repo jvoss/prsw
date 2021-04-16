@@ -28,7 +28,7 @@ class TestWhatsMyIp(UnitTest):
     }
 
     def setup(self):
-        url = f"{API_URL}{WhatsMyIp}data.json?"
+        url = f"{API_URL}{WhatsMyIp.PATH}data.json?"
 
         self.api_response = Output(url, **TestWhatsMyIp.RESPONSE)
         self.params = {"preferred_version": WhatsMyIp.VERSION}

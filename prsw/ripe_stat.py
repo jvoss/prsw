@@ -6,6 +6,7 @@ from typing import Optional, Type
 from .api import get
 from .stat.announced_prefixes import AnnouncedPrefixes
 from .stat.looking_glass import LookingGlass
+from .stat.network_info import NetworkInfo
 from .stat.rpki_validation_status import RPKIValidationStatus
 from .stat.whats_my_ip import WhatsMyIp
 
@@ -87,6 +88,11 @@ class RIPEstat:
     def looking_glass(self) -> Type[LookingGlass]:
         """Lazy alias to :class:`.stat.LookingGlass`."""
         return partial(LookingGlass, self)
+
+    @property
+    def network_info(self) -> Type[NetworkInfo]:
+        """Lazy alias to :class:`.stat.NetworkInfo`."""
+        return partial(NetworkInfo, self)
 
     @property
     def rpki_validation_status(self) -> Type[RPKIValidationStatus]:
