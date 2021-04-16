@@ -7,6 +7,7 @@ from .api import get
 from .stat.announced_prefixes import AnnouncedPrefixes
 from .stat.looking_glass import LookingGlass
 from .stat.rpki_validation_status import RPKIValidationStatus
+from .stat.whats_my_ip import WhatsMyIp
 
 
 class RIPEstat:
@@ -79,15 +80,20 @@ class RIPEstat:
 
     @property
     def announced_prefixes(self) -> Type[AnnouncedPrefixes]:
-        """Lazy alias to :class:`.api.AnnouncedPrefixes`."""
+        """Lazy alias to :class:`.stat.AnnouncedPrefixes`."""
         return partial(AnnouncedPrefixes, self)
 
     @property
     def looking_glass(self) -> Type[LookingGlass]:
-        """Lazy alias to :class:`.api.LookingGlass`."""
+        """Lazy alias to :class:`.stat.LookingGlass`."""
         return partial(LookingGlass, self)
 
     @property
     def rpki_validation_status(self) -> Type[RPKIValidationStatus]:
-        """Lazy alias to :class:`.api.RPKIValidationStatus`."""
+        """Lazy alias to :class:`.stat.RPKIValidationStatus`."""
         return partial(RPKIValidationStatus, self)
+
+    @property
+    def whats_my_ip(self) -> Type[WhatsMyIp]:
+        """Laze alias to :class:`.stat.WhatsMyIp`."""
+        return partial(WhatsMyIp, self)
