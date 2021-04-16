@@ -14,19 +14,17 @@ class AnnouncedPrefixes:
 
     Reference: `<https://stat.ripe.net/docs/data_api#announced-prefixes>`_
 
-    ====================    =======================================================
-    Attribute               Description
-    ====================    =======================================================
-    ``resource``            The Autonomous System Number for which to return
-                            prefixes
-    ``starttime``           The start time for the query. (defaults to two weeks
-                            before current date and time)
-    ``endtime``             The start time for the query. (defaults to two
-                            weeks before current date and time)
-    ``min_peers_seeing``    Minimum number of RIS peers seeing the prefix for
-                            it to be included in the results. Excludes low
-                            visibility/localized announcements. (default 10)
-    ====================    =======================================================
+    =================== ===============================================================
+    Property            Description
+    =================== ===============================================================
+    ``earliest_time``   Earliest **datetime** data is available for.
+    ``latest_time``     Latest **datetime** data is available for.
+    ``prefixes``        A **list** of all announced prefixes + the timelines when they
+                        were visible.
+    ``query_endtime``   The **datetime** at which the query ended.
+    ``query_starttime`` The **datetime** at which the query started.
+    ``resource``        The resource used for the query.
+    =================== ===============================================================
 
     .. code-block:: python
 
@@ -61,7 +59,33 @@ class AnnouncedPrefixes:
         endtime: Optional[datetime] = None,
         min_peers_seeing=None,
     ):
-        """Initialize and request Announced Prefixes."""
+        """
+        Initialize and request Announced Prefixes.
+
+        :param resource: The Autonomous System Number for which to return prefixes
+        :param starttime: The start time for the query. (defaults to two weeks before
+            current date and time)
+        :param endtime: The start time for the query. (defaults to two weeks before
+            current date and time)
+        :param min_peers_seeing: Minimum number of RIS peers seeing the prefix for
+            it to be included in the results. Excludes low visibility/localized 
+            announcements. (default 10)
+
+        .. code-block:: python
+
+            from datetime import datetime
+
+            start = datetime.fromisoformat("2021-01-01T12:00:00.000000")
+            end = datetime.now()
+
+            prefixes = ripe.announced_prefixes(
+                3333,                # Autonomous System Number
+                starttime=start,     # datetime
+                endtime=end,         # datetime
+                min_peers_seeing=20, # int
+                )        
+
+        """
 
         params = {
             "preferred_version": AnnouncedPrefixes.VERSION,
@@ -135,7 +159,21 @@ class AnnouncedPrefixes:
 
     @property
     def prefixes(self):
-        """A list of all announced prefixes + the timelines when they were visible."""
+        """
+        A list of all announced prefixes + the timelines when they were visible.
+
+        Returns a **list** of `AnnouncedPrefix` named tuples with the following
+        properties:
+
+        =============   ========================================================
+        Property        Description
+        =============   ========================================================
+        ``prefix``      Announced **IPv4Network** or **IPv6Network**
+        ``timelines``   **List** of Timeline named tuples with properties
+                        ``starttime`` and ``endtime``
+        =============   ========================================================
+
+        """
         prefixes = []
         AnnouncedPrefix = namedtuple("AnnouncedPrefix", ["prefix", "timelines"])
         Timeline = namedtuple("Timeline", ["starttime", "endtime"])
@@ -157,15 +195,15 @@ class AnnouncedPrefixes:
 
     @property
     def query_endtime(self):
-        """The `datetime` at which the query ended."""
+        """The **datetime** at which the query ended."""
         return datetime.fromisoformat(self._api.data["query_endtime"])
 
     @property
     def query_starttime(self):
-        """The `datetime` at which the query started."""
+        """The **datetime** at which the query started."""
         return datetime.fromisoformat(self._api.data["query_starttime"])
 
     @property
     def resource(self):
-        """The resource used for the query."""
+        """The resource (Autonomous System number) used for the query."""
         return self._api.data["resource"]
