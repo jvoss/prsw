@@ -6,6 +6,7 @@ from . import UnitTest
 from prsw import RIPEstat
 from prsw.stat.announced_prefixes import AnnouncedPrefixes
 from prsw.stat.looking_glass import LookingGlass
+from prsw.stat.network_info import NetworkInfo
 from prsw.stat.rpki_validation_status import RPKIValidationStatus
 from prsw.stat.whats_my_ip import WhatsMyIp
 
@@ -64,6 +65,9 @@ class TestRIPEstat(UnitTest):
 
     def test_looking_glass(self):
         assert self.ripestat.looking_glass.func == LookingGlass
+
+    def test_network_info(self):
+        assert self.ripestat.network_info.func == NetworkInfo
 
     def test_rpki_validation_status(self):
         assert self.ripestat.rpki_validation_status.func == RPKIValidationStatus
