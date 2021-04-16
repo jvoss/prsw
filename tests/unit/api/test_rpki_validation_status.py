@@ -53,18 +53,25 @@ class TestRPKIValidationStatus(UnitTest):
 
         return super().setup()
 
-    def test__init__valid_params(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            response = RPKIValidationStatus(
-                self.ripestat,
-                resource=self.params["resource"],
-                prefix=self.params["prefix"],
-            )
+    @pytest.fixture(scope="session")
+    def mock_get(self):
+        self.setup()
 
-            assert isinstance(response, RPKIValidationStatus)
+        with patch.object(self.ripestat, "_get") as mocked_get:
+            mocked_get.return_value = self.api_response
 
-            mock_get.assert_called()
-            mock_get.assert_called_with(RPKIValidationStatus.PATH, self.params)
+            yield self
+
+            mocked_get.assert_called_with(RPKIValidationStatus.PATH, self.params)
+
+    def test__init__valid_params(self, mock_get):
+        response = RPKIValidationStatus(
+            mock_get.ripestat,
+            resource=self.params["resource"],
+            prefix=self.params["prefix"],
+        )
+
+        assert isinstance(response, RPKIValidationStatus)
 
     def test__init__invalid_prefix(self):
         with pytest.raises(ValueError):
@@ -72,66 +79,48 @@ class TestRPKIValidationStatus(UnitTest):
                 self.ripestat, resource=self.params["resource"], prefix="invalid"
             )
 
-    def test_prefix(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
+    def test_prefix(self, mock_get):
+        response = RPKIValidationStatus(
+            mock_get.ripestat,
+            resource=self.params["resource"],
+            prefix=self.params["prefix"],
+        )
 
-            response = RPKIValidationStatus(
-                self.ripestat,
-                resource=self.params["resource"],
-                prefix=self.params["prefix"],
-            )
+        assert isinstance(response.prefix, IPv4Network)
+        assert response.prefix == IPv4Network(self.params["prefix"])
 
-            mock_get.assert_called()
-            assert isinstance(response.prefix, IPv4Network)
-            assert response.prefix == IPv4Network(self.params["prefix"])
+    def test_resource(self, mock_get):
+        response = RPKIValidationStatus(
+            mock_get.ripestat,
+            resource=self.params["resource"],
+            prefix=self.params["prefix"],
+        )
 
-    def test_resource(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
+        assert response.resource == self.params["resource"]
 
-            response = RPKIValidationStatus(
-                self.ripestat,
-                resource=self.params["resource"],
-                prefix=self.params["prefix"],
-            )
+    def test_status(self, mock_get):
+        response = RPKIValidationStatus(
+            mock_get.ripestat,
+            resource=self.params["resource"],
+            prefix=self.params["prefix"],
+        )
 
-            mock_get.assert_called()
-            assert response.resource == self.params["resource"]
+        assert response.status == TestRPKIValidationStatus.RESPONSE["data"]["status"]
 
-    def test_status(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
+    def test_validating_roas(self, mock_get):
+        response = RPKIValidationStatus(
+            mock_get.ripestat,
+            resource=self.params["resource"],
+            prefix=self.params["prefix"],
+        )
 
-            response = RPKIValidationStatus(
-                self.ripestat,
-                resource=self.params["resource"],
-                prefix=self.params["prefix"],
-            )
+        assert isinstance(response.validating_roas, Iterable)
 
-            mock_get.assert_called()
-            assert (
-                response.status == TestRPKIValidationStatus.RESPONSE["data"]["status"]
-            )
+        for roa in response.validating_roas:
+            assert "origin" in roa.__dir__()
+            assert "prefix" in roa.__dir__()
+            assert "validity" in roa.__dir__()
+            assert "source" in roa.__dir__()
+            assert "max_length" in roa.__dir__()
 
-    def test_validating_roas(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-
-            response = RPKIValidationStatus(
-                self.ripestat,
-                resource=self.params["resource"],
-                prefix=self.params["prefix"],
-            )
-
-            mock_get.assert_called()
-            assert isinstance(response.validating_roas, Iterable)
-
-            for roa in response.validating_roas:
-                assert "origin" in roa.__dir__()
-                assert "prefix" in roa.__dir__()
-                assert "validity" in roa.__dir__()
-                assert "source" in roa.__dir__()
-                assert "max_length" in roa.__dir__()
-
-                assert isinstance(roa.prefix, IPv4Network)
+            assert isinstance(roa.prefix, IPv4Network)
