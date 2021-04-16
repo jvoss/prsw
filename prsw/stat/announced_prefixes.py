@@ -149,12 +149,12 @@ class AnnouncedPrefixes:
 
     @property
     def earliest_time(self):
-        """Earliest `datetime` data is available for."""
+        """Earliest **datetime** data is available for."""
         return datetime.fromisoformat(self._api.data["earliest_time"])
 
     @property
     def latest_time(self):
-        """Latest `datetime` data is available for."""
+        """Latest **datetime** data is available for."""
         return datetime.fromisoformat(self._api.data["latest_time"])
 
     @property
