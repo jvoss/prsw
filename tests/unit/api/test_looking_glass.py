@@ -62,103 +62,83 @@ class TestLookingGlass(UnitTest):
 
         return super().setup()
 
-    def test__init__valid_resource(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
+    @pytest.fixture(scope="session")
+    def mock_get(self):
+        self.setup()
 
-            assert isinstance(response, LookingGlass)
-            mock_get.assert_called()
-            mock_get.assert_called_with(LookingGlass.PATH, self.params)
+        with patch.object(self.ripestat, "_get") as mocked_get:
+            mocked_get.return_value = self.api_response
+
+            yield self
+
+            mocked_get.assert_called_with(LookingGlass.PATH, self.params)
+
+    def test__init__valid_resource(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+        assert isinstance(response, LookingGlass)
 
     def test__init__invalid_resource(self):
         with pytest.raises(ValueError):
             LookingGlass(self.ripestat, resource="invalid-prefix")
 
-    def test__getitem__(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
+    def test__getitem__(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+        assert isinstance(response["RRC00"], tuple)  # namedtuple: RRC by RRC key
 
-            mock_get.assert_called()
-            assert isinstance(response["RRC00"], tuple)  # namedtuple: RRC by RRC key
+    def test__iter__(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+        assert isinstance(response, Iterable)
 
-    def test__iter__(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
+    def test__len__(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+        assert len(response) == len(TestLookingGlass.RESPONSE["data"]["rrcs"])
 
-            mock_get.assert_called()
-            assert isinstance(response, Iterable)
+    def test_objectify_rrcs(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
 
-    def test__len__(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
+        for collector in response:
+            assert isinstance(collector, tuple)  # namedtuple: RRC
+            assert "rrc" in collector.__dir__()
+            assert "location" in collector.__dir__()
+            assert "peers" in collector.__dir__()
 
-            mock_get.assert_called()
-            assert len(response) == len(TestLookingGlass.RESPONSE["data"]["rrcs"])
-
-    def test_objectify_rrcs(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
-
-            mock_get.assert_called()
-            for collector in response:
-                assert isinstance(collector, tuple)  # namedtuple: RRC
-                assert "rrc" in collector.__dir__()
-                assert "location" in collector.__dir__()
-                assert "peers" in collector.__dir__()
-
-                for peer in collector.peers:
-                    assert isinstance(peer, tuple)  # namedtuple: Peer
-                    assert "asn_origin" in peer.__dir__()
-                    assert "as_path" in peer.__dir__()
-                    assert "community" in peer.__dir__()
-                    assert "last_updated" in peer.__dir__()
-                    assert "prefix" in peer.__dir__()
-                    assert "peer" in peer.__dir__()
-                    assert "origin" in peer.__dir__()
-                    assert "next_hop" in peer.__dir__()
-                    assert "latest_time" in peer.__dir__()
-
-    def test_latest_time(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
-
-            latest_time = TestLookingGlass.RESPONSE["data"]["latest_time"]
-            assert response.latest_time == datetime.fromisoformat(latest_time)
-            mock_get.assert_called()
-
-    def test_query_time(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
-
-            time = TestLookingGlass.RESPONSE["data"]["query_time"]
-            assert response.query_time == datetime.fromisoformat(time)
-            mock_get.assert_called()
-
-    def test_peers(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
-
-            mock_get.assert_called()
-            assert isinstance(response.peers, list)
-
-            for peer in response.peers:
+            for peer in collector.peers:
                 assert isinstance(peer, tuple)  # namedtuple: Peer
+                assert "asn_origin" in peer.__dir__()
+                assert "as_path" in peer.__dir__()
+                assert "community" in peer.__dir__()
+                assert "last_updated" in peer.__dir__()
+                assert "prefix" in peer.__dir__()
+                assert "peer" in peer.__dir__()
+                assert "origin" in peer.__dir__()
+                assert "next_hop" in peer.__dir__()
+                assert "latest_time" in peer.__dir__()
 
-    def test_rrcs(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = LookingGlass(self.ripestat, resource=self.params["resource"])
+    def test_latest_time(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
 
-            mock_get.assert_called()
-            assert isinstance(response.rrcs, dict)
+        latest_time = TestLookingGlass.RESPONSE["data"]["latest_time"]
+        assert response.latest_time == datetime.fromisoformat(latest_time)
 
-            for name, route_server in response.rrcs.items():
-                assert isinstance(name, str)  # RRC name: 'RRC00'
-                assert isinstance(route_server, tuple)  # namedtuple: RRC
+    def test_query_time(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+
+        time = TestLookingGlass.RESPONSE["data"]["query_time"]
+        assert response.query_time == datetime.fromisoformat(time)
+
+    def test_peers(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+
+        assert isinstance(response.peers, list)
+
+        for peer in response.peers:
+            assert isinstance(peer, tuple)  # namedtuple: Peer
+
+    def test_rrcs(self, mock_get):
+        response = LookingGlass(mock_get.ripestat, resource=self.params["resource"])
+
+        assert isinstance(response.rrcs, dict)
+
+        for name, route_server in response.rrcs.items():
+            assert isinstance(name, str)  # RRC name: 'RRC00'
+            assert isinstance(route_server, tuple)  # namedtuple: RRC
