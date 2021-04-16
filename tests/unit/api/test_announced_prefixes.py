@@ -77,35 +77,38 @@ class TestAnnouncedPrefixes(UnitTest):
 
         return super().setup()
 
-    def test__init__valid_resource(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            response = AnnouncedPrefixes(
-                self.ripestat, resource=self.params["resource"]
-            )
+    @pytest.fixture(scope="session")
+    def mock_get(self):
+        self.setup()
 
-            assert isinstance(response, AnnouncedPrefixes)
+        with patch.object(self.ripestat, "_get") as mocked_get:
+            mocked_get.return_value = self.api_response
 
-            mock_get.assert_called()
-            mock_get.assert_called_with(AnnouncedPrefixes.PATH, self.params)
+            yield self
 
-    def test__init__valid_starttime(self):
+            mocked_get.assert_called_with(AnnouncedPrefixes.PATH, self.params)
+
+    def test__init__valid_resource(self, mock_get):
+        response = AnnouncedPrefixes(
+            mock_get.ripestat, resource=self.params["resource"]
+        )
+
+        assert isinstance(response, AnnouncedPrefixes)
+
+    def test__init__valid_starttime(self, mock_get):
         params = self.params.copy()
         params["starttime"] = datetime.fromisoformat("2011-12-12T16:00:00")
 
-        with patch.object(self.ripestat, "_get") as mock_get:
-            response = AnnouncedPrefixes(
-                self.ripestat,
-                resource=params["resource"],
-                starttime=params["starttime"],
-            )
+        response = AnnouncedPrefixes(
+            mock_get.ripestat,
+            resource=params["resource"],
+            starttime=params["starttime"],
+        )
 
-            assert isinstance(response, AnnouncedPrefixes)
+        assert isinstance(response, AnnouncedPrefixes)
 
-            expected_params = params.copy()
-            expected_params["starttime"] = params["starttime"].isoformat()
-
-            mock_get.assert_called()
-            mock_get.assert_called_with(AnnouncedPrefixes.PATH, expected_params)
+        expected_params = params.copy()
+        expected_params["starttime"] = params["starttime"].isoformat()
 
     def test__init__invalid_starttime(self):
         params = self.params.copy()
@@ -118,24 +121,20 @@ class TestAnnouncedPrefixes(UnitTest):
                 starttime=params["starttime"],
             )
 
-    def test__init__valid_endtime(self):
+    def test__init__valid_endtime(self, mock_get):
         params = self.params.copy()
         params["endtime"] = datetime.fromisoformat("2021-04-14T16:00:00")
 
-        with patch.object(self.ripestat, "_get") as mock_get:
-            response = AnnouncedPrefixes(
-                self.ripestat,
-                resource=params["resource"],
-                endtime=params["endtime"],
-            )
+        response = AnnouncedPrefixes(
+            mock_get.ripestat,
+            resource=params["resource"],
+            endtime=params["endtime"],
+        )
 
-            assert isinstance(response, AnnouncedPrefixes)
+        assert isinstance(response, AnnouncedPrefixes)
 
-            expected_params = params.copy()
-            expected_params["endtime"] = params["endtime"].isoformat()
-
-            mock_get.assert_called()
-            mock_get.assert_called_with(AnnouncedPrefixes.PATH, expected_params)
+        expected_params = params.copy()
+        expected_params["endtime"] = params["endtime"].isoformat()
 
     def test__init__invalid_endtime(self):
         params = self.params.copy()
@@ -148,24 +147,20 @@ class TestAnnouncedPrefixes(UnitTest):
                 endtime=params["endtime"],
             )
 
-    def test__init__valid_min_peers_seeing(self):
+    def test__init__valid_min_peers_seeing(self, mock_get):
         params = self.params.copy()
         params["min_peers_seeing"] = 5
 
-        with patch.object(self.ripestat, "_get") as mock_get:
-            response = AnnouncedPrefixes(
-                self.ripestat,
-                resource=params["resource"],
-                min_peers_seeing=params["min_peers_seeing"],
-            )
+        response = AnnouncedPrefixes(
+            mock_get.ripestat,
+            resource=params["resource"],
+            min_peers_seeing=params["min_peers_seeing"],
+        )
 
-            expected_params = params.copy()
-            expected_params["min_peers_seeing"] = "5"
+        expected_params = params.copy()
+        expected_params["min_peers_seeing"] = "5"
 
-            assert isinstance(response, AnnouncedPrefixes)
-
-            mock_get.assert_called()
-            mock_get.assert_called_with(AnnouncedPrefixes.PATH, expected_params)
+        assert isinstance(response, AnnouncedPrefixes)
 
     def test__init__invalid_min_peers_seeing(self):
         params = self.params.copy()
@@ -178,86 +173,52 @@ class TestAnnouncedPrefixes(UnitTest):
                 min_peers_seeing=params["min_peers_seeing"],
             )
 
-    def test__getitem__(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
+    def test__getitem__(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
+        assert isinstance(response[0], tuple)  # namedtuple: AnnouncedPrefix
 
-            mock_get.assert_called()
-            assert isinstance(response[0], tuple)  # namedtuple: AnnouncedPrefix
+    def test__iter__(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
+        assert isinstance(response, Iterable)
 
-    def test__iter__(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
+    def test__len__(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
+        assert len(response) == len(TestAnnouncedPrefixes.RESPONSE["data"]["prefixes"])
 
-            mock_get.assert_called()
-            assert isinstance(response, Iterable)
+    def test_earliest_time(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
 
-    def test__len__(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
+        earliest_time = TestAnnouncedPrefixes.RESPONSE["data"]["earliest_time"]
+        assert response.earliest_time == datetime.fromisoformat(earliest_time)
 
-            mock_get.assert_called()
-            assert len(response) == len(
-                TestAnnouncedPrefixes.RESPONSE["data"]["prefixes"]
-            )
+    def test_latest_time(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
 
-    def test_earliest_time(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
+        latest_time = TestAnnouncedPrefixes.RESPONSE["data"]["latest_time"]
+        assert response.latest_time == datetime.fromisoformat(latest_time)
 
-            earliest_time = TestAnnouncedPrefixes.RESPONSE["data"]["earliest_time"]
-            assert response.earliest_time == datetime.fromisoformat(earliest_time)
-            mock_get.assert_called()
+    def test_prefixes(self, mock_get):
+        for network in AnnouncedPrefixes(mock_get.ripestat, 3333):
+            assert isinstance(network.prefix, ipaddress.IPv4Network)
 
-    def test_latest_time(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
+            for timeline in network.timelines:
+                assert isinstance(timeline.starttime, datetime)
+                assert isinstance(timeline.endtime, datetime)
 
-            latest_time = TestAnnouncedPrefixes.RESPONSE["data"]["latest_time"]
-            assert response.latest_time == datetime.fromisoformat(latest_time)
-            mock_get.assert_called()
+    def test_query_endtime(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
 
-    def test_prefixes(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
+        time = TestAnnouncedPrefixes.RESPONSE["data"]["query_endtime"]
+        assert response.query_endtime == datetime.fromisoformat(time)
 
-            for network in AnnouncedPrefixes(self.ripestat, 3333):
-                assert isinstance(network.prefix, ipaddress.IPv4Network)
+    def test_query_starttime(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
 
-                for timeline in network.timelines:
-                    assert isinstance(timeline.starttime, datetime)
-                    assert isinstance(timeline.endtime, datetime)
+        time = TestAnnouncedPrefixes.RESPONSE["data"]["query_starttime"]
+        assert response.query_starttime == datetime.fromisoformat(time)
 
-            mock_get.assert_called()
+    def test_resource(self, mock_get):
+        response = AnnouncedPrefixes(mock_get.ripestat, 3333)
 
-    def test_query_endtime(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
-
-            time = TestAnnouncedPrefixes.RESPONSE["data"]["query_endtime"]
-            assert response.query_endtime == datetime.fromisoformat(time)
-            mock_get.assert_called()
-
-    def test_query_starttime(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
-
-            time = TestAnnouncedPrefixes.RESPONSE["data"]["query_starttime"]
-            assert response.query_starttime == datetime.fromisoformat(time)
-            mock_get.assert_called()
-
-    def test_resource(self):
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
-            response = AnnouncedPrefixes(self.ripestat, 3333)
-
-            resource = TestAnnouncedPrefixes.RESPONSE["data"]["resource"]
-            assert response.resource == resource
-            mock_get.assert_called()
+        resource = TestAnnouncedPrefixes.RESPONSE["data"]["resource"]
+        assert response.resource == resource

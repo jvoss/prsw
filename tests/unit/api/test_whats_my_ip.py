@@ -27,7 +27,6 @@ class TestWhatsMyIp(UnitTest):
         "time": "2021-04-16T01:39:15.228803",
     }
 
-    @pytest.fixture(autouse=True)
     def setup(self):
         url = f"{API_URL}{WhatsMyIp.PATH}data.json?"
 
@@ -36,23 +35,26 @@ class TestWhatsMyIp(UnitTest):
 
         super().setup()
 
-        with patch.object(self.ripestat, "_get") as mock_get:
-            mock_get.return_value = self.api_response
+    @pytest.fixture(scope="session")
+    def mock_get(self):
+        self.setup()
+
+        with patch.object(self.ripestat, "_get") as mocked_get:
+            mocked_get.return_value = self.api_response
 
             yield self
 
-            mock_get.assert_called()
-            mock_get.assert_called_with(WhatsMyIp.PATH, self.params)
+            mocked_get.assert_called_with(WhatsMyIp.PATH, self.params)
 
-    def test__init__(self):
-        response = WhatsMyIp(self.ripestat)
+    def test__init__(self, mock_get):
+        response = WhatsMyIp(mock_get.ripestat)
         assert isinstance(response, WhatsMyIp)
 
-    def test__str__(self):
-        response = WhatsMyIp(self.ripestat)
+    def test__str__(self, mock_get):
+        response = WhatsMyIp(mock_get.ripestat)
         assert str(response) == TestWhatsMyIp.RESPONSE["data"]["ip"]
 
-    def test_ip(self):
-        response = WhatsMyIp(self.ripestat)
+    def test_ip(self, mock_get):
+        response = WhatsMyIp(mock_get.ripestat)
         assert response.ip == IPv6Address(TestWhatsMyIp.RESPONSE["data"]["ip"])
         assert isinstance(response.ip, IPv6Address)
