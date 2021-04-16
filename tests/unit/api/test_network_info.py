@@ -42,7 +42,6 @@ class TestNetworkInfo(UnitTest):
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response
-            print("debug1: ", self.ripestat)
 
             yield self
 
