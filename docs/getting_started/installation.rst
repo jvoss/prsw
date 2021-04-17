@@ -1,7 +1,7 @@
 Installation
 ============
 
-PRSW requires Python 3.6+. The easiest way to install PRSW is via ``pip``.
+PRSW requires Python 3.7+. The easiest way to install PRSW is via ``pip``.
 
 .. code-block:: bash
 

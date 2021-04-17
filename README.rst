@@ -27,7 +27,7 @@ the `RIPEstat Data API <https://stat.ripe.net/docs/data_api>`_.
 Installation
 ------------
 
-PRSW is supported on Python 3.6+ and can be installed via 
+PRSW is supported on Python 3.7+ and can be installed via 
 `pip <https://pypi.python.org/pypi/pip>`_.
 
 .. code-block:: bash
