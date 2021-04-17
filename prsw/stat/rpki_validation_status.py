@@ -108,14 +108,14 @@ class RPKIValidationStatus:
 
         Returns a **list** of `ROA` named tuples with the following properties:
 
-        =============   ====================================================
-        Property        Description
-        =============   ====================================================
-        ``origin``      **Int** representing the AS
-        ``prefix``      **IPv4Network** or **IPv6Network** of the ROA record
-        ``source``      Source of the ROA
-        ``max_length``  Maximum permitted prefix length **int**
-        ==============  ====================================================
+        ==============   ====================================================
+        Property         Description
+        ==============   ====================================================
+        ``origin``       **Int** representing the AS
+        ``prefix``       **IPv4Network** or **IPv6Network** of the ROA record
+        ``source``       Source of the ROA
+        ``max_length``   Maximum permitted prefix length **int**
+        ==============   ====================================================
 
         """
         roas = []
