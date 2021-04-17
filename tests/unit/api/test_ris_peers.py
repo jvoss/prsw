@@ -116,12 +116,24 @@ class TestRISPeers(UnitTest):
         latest_time = TestRISPeers.RESPONSE["data"]["latest_time"]
         assert response.latest_time == datetime.fromisoformat(latest_time)
 
+    def test_keys(self, mock_get):
+        response = RISPeers(mock_get.ripestat)
+
+        assert response.keys().__class__.__name__ == "dict_keys"
+        assert list(response.keys()) == [
+            k.upper() for k in TestRISPeers.RESPONSE["data"]["peers"].keys()
+        ]
+
     def test_peers(self, mock_get):
         response = RISPeers(mock_get.ripestat)
         assert isinstance(response.peers, dict)
 
         for rrc, peers in response.peers.items():
             assert isinstance(rrc, str)
+
+            # ensure RRC name is normalized (upcase)
+            assert rrc == str(rrc).upper()
+
             for peer in peers:
                 assert isinstance(peer.asn, int)
                 assert isinstance(peer.ip, IPv4Address)

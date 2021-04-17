@@ -16,7 +16,7 @@ class RISPeers:
     08:00 and 16:00 UTC) when RIS data has been collected. By default, the data call
     returns the latest data.
 
-    Reference: '<https://stat.ripe.net/docs/data_api#ris-peers>'_
+    Reference: `<https://stat.ripe.net/docs/data_api#ris-peers>`_
 
     =================   ==================================================
     Property            Description
@@ -35,7 +35,7 @@ class RISPeers:
         response = ripe.ris_peers()
 
         for rrc, peers in response.peers.items():
-            print(rrc)  # "rrc11"
+            print(rrc)  # "RRC11"
 
             for peer in peers:
                 print(peer.v6_prefix_count) # 0
@@ -75,7 +75,7 @@ class RISPeers:
 
         self._api = RIPEstat._get(RISPeers.PATH, params)
 
-    def __getitem__(self, rrc):
+    def __getitem__(self, rrc: str):
         """
         Return the collector node specified.
 
@@ -124,6 +124,10 @@ class RISPeers:
         """Latest **datetime** data is available."""
         return datetime.fromisoformat(self._api.data["latest_time"])
 
+    def keys(self):
+        """Returns a list of RRC names in the dataset."""
+        return self.peers.keys()
+
     @property
     def peers(self):
         """
@@ -131,9 +135,9 @@ class RISPeers:
 
         RISPeers have the following properties:
 
-        ==================  =============================
+        =================== =============================
         Property            Description
-        ==================  =============================
+        =================== =============================
         ``asn``             Peer Autonomous System number
         ``ip``              Peer IP address
         ``v4_prefix_count`` Count of IPv4 prefixes
@@ -147,7 +151,7 @@ class RISPeers:
             ripe = prsw.RIPEstat()
             rrcs = ripe.ris_peers()
 
-            for rrc, peers in rrcs.items():
+            for rrc, peers in rrcs.peers.items():
                 print(rrc) # "RRC11"
 
                 for peer in peers:
