@@ -9,6 +9,12 @@ class WhatsMyIp:
 
     Reference: `<https://stat.ripe.net/docs/data_api#whats-my-ip>`_
 
+    ========= ===============================
+    Property  Description
+    ========= ===============================
+    ``ip``    The IP address of the requestor
+    ========= ===============================
+
     .. code-block:: python
 
         import prsw
@@ -40,5 +46,5 @@ class WhatsMyIp:
 
     @property
     def ip(self):
-        """Return the IP address as an `ipaddress` object."""
+        """Return the IP address as an **ipaddress** object."""
         return ipaddress.ip_address(self._api.data["ip"])

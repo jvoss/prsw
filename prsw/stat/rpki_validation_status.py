@@ -14,13 +14,14 @@ class RPKIValidationStatus:
 
     Reference: `<https://stat.ripe.net/docs/data_api#rpki-validation>`_
 
-    ============    ===================================================================
-    Attribute       Description
-    ============    ===================================================================
-    ``resource``    The ASN used to perform the RPKI validity state lookup.
-    ``prefix``      The prefix to perform the RPKI validity state lookup. Note the
-                    prefix’s length is also taken from this field.
-    ============    ===================================================================
+    =================== ===============================================================
+    Property            Description
+    =================== ===============================================================
+    ``prefix``          The prefix this query is based on
+    ``resource``        The ASN this query is based on.
+    ``status``          The RPKI validity state, according to RIPE NCC's RPKI validator
+    ``validating_roas`` A list if validating ROAs
+    =================== ===============================================================
 
     .. code-block:: python
 
@@ -52,7 +53,14 @@ class RPKIValidationStatus:
         resource,
         prefix: ipaddress.ip_network,
     ):
-        """Initialize and request RPKIValidationStatus."""
+        """
+        Initialize and request RPKIValidationStatus.
+
+        :param resource: The ASN used to perform the RPKI validity state lookup.
+        :param prefix: The prefix to perform the RPKI validity state lookup. Note the
+            prefix’s length is also taken from this field.
+
+        """
 
         # validate and sanitize prefix (ensure is proper boundary)
         prefix = ipaddress.ip_network(prefix, strict=False)
@@ -73,7 +81,7 @@ class RPKIValidationStatus:
     @property
     def resource(self):
         """The ASN this query is based on."""
-        return self._api.data["resource"]
+        return int(self._api.data["resource"])
 
     @property
     def status(self):
@@ -106,6 +114,8 @@ class RPKIValidationStatus:
 
             # repack API response with ipaddress object
             for k, v in roa.items():
+                if k == "origin":
+                    v = int(v)
                 if k == "prefix":
                     v = ipaddress.ip_network(roa["prefix"], strict=False)
 

@@ -18,13 +18,14 @@ class LookingGlass:
 
     Reference: `<https://stat.ripe.net/docs/data_api#looking-glass>`_
 
-    ============    ===================================================================
-    Attribute       Description
-    ============    ===================================================================
-    ``resource``    A prefix or an IP address. Prefixes need to match exactly a prefix
-                    found in the routing data. If given as IP address, the data call
-                    will try to find the encompassing prefix for the IP address.
-    ============    ===================================================================
+    ================    =============================================================
+    Property            Description
+    ================    =============================================================
+    ``latest_time``     Provides **datetime** on how recent this data is.
+    ``query_time``      Provides **datetime** on when the query was performed.
+    ``peers``           **List** containing all peers from every collector node (RRC)
+    ``rrcs``            **Dict** containing each collector node (RRC)
+    ================    =============================================================
 
     .. code-block:: python
 
@@ -68,7 +69,14 @@ class LookingGlass:
     VERSION = "2.1"
 
     def __init__(self, RIPEstat, resource: ipaddress.ip_network):
-        """Initialize and request prefix from the Looking Glass."""
+        """
+        Initialize and request prefix from the Looking Glass.
+
+        :param resource: A prefix or an IP address. Prefixes need to match exactly a
+            prefix found in the routing data. If given as IP address, the data call
+            will try to find the encompassing prefix for the IP address.
+
+        """
         # validate and sanitize prefix (ensure proper boundary)
         resource = ipaddress.ip_network(str(resource), strict=False)
 
@@ -178,18 +186,35 @@ class LookingGlass:
 
     @property
     def latest_time(self):
-        """Provides `datetime` on how recent the data is."""
+        """Provides **datetime** on how recent the data is."""
         return datetime.fromisoformat(self._api.data["latest_time"])
 
     @property
     def query_time(self):
-        """Provides `datetime` on when the query was performed."""
+        """Provides **datetime** on when the query was performed."""
         return datetime.fromisoformat(self._api.data["query_time"])
 
     @property
     def peers(self):
         """
-        Shortcut to a List containing all peers from every collector node (RRC).
+        Shortcut to a **list** containing all peers from every collector node (RRC).
+
+        Each peer entry is a *Peer* named tuple with the following properties:
+
+        ================    =============================================================
+        Property            Description
+        ================    =============================================================
+        ``asn_origin``      The originating ASN for the matched prefix (**int**)
+        ``as_path``         The path of ASNs seen for this route (**tuple**)
+        ``community``       BGP community information for this route (**list**)
+        ``last_updated``    The timestamp when this route was last changed (**datetime**)
+        ``prefix``          The matched prefix (**IPv4Network** or **IPv6Network**) based
+                            on the query input resource
+        ``peer``            **IPv4Address** or **IPv6Address** of the peer interface
+        ``nexthop``         The next hop (**IPv4Address** or **IPv6Address**) from the
+                            perspective of this peer
+        ``latest_time``     The **datetime** when this route was last confirmed
+        ================    =============================================================
 
         .. code-block:: python
 
@@ -212,8 +237,19 @@ class LookingGlass:
     @property
     def rrcs(self):
         """
-        List containing one entry for each collector node (RRC) that provides
+        **Dict** containing one entry for each collector node (RRC) that provides
         data for the given input resource. Each RRC entry holds the location and
         the ID of the RRC together with the list of BGP peer information.
+
+        Each value is an RRC *named tuple* with the following properties:
+
+        ============    =======================================================
+        Property        Description
+        ============    =======================================================
+        ``rrc``         ID of the RRC (**str**), "RRC00"
+        ``location``    Location of the RRC (**str**), "Amsterdam, Netherlands"
+        ``peers``       **List** of BGP peer information, see `peers`
+        ============    =======================================================
+
         """
         return self._rrcs

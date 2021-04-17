@@ -11,7 +11,7 @@ class NetworkInfo:
     Reference: '<https://stat.ripe.net/docs/data_api#network-info>'_
 
     ==========  ===============================================================
-    Attribute   Description
+    Property    Description
     ==========  ===============================================================
     ``asns``    List of ASNs the prefix is announced from
     ``prefix``  IPAddress containing the prefix the requessted IP address is in

@@ -96,7 +96,7 @@ class TestRPKIValidationStatus(UnitTest):
             prefix=self.params["prefix"],
         )
 
-        assert response.resource == self.params["resource"]
+        assert response.resource == int(self.params["resource"])
 
     def test_status(self, mock_get):
         response = RPKIValidationStatus(

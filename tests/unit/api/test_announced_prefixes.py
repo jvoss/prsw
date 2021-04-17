@@ -221,4 +221,4 @@ class TestAnnouncedPrefixes(UnitTest):
         response = AnnouncedPrefixes(mock_get.ripestat, 3333)
 
         resource = TestAnnouncedPrefixes.RESPONSE["data"]["resource"]
-        assert response.resource == resource
+        assert response.resource == int(resource)
