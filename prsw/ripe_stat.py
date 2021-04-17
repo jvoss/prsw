@@ -7,6 +7,7 @@ from .api import get
 from .stat.announced_prefixes import AnnouncedPrefixes
 from .stat.looking_glass import LookingGlass
 from .stat.network_info import NetworkInfo
+from .stat.ris_peers import RISPeers
 from .stat.rpki_validation_status import RPKIValidationStatus
 from .stat.whats_my_ip import WhatsMyIp
 
@@ -93,6 +94,11 @@ class RIPEstat:
     def network_info(self) -> Type[NetworkInfo]:
         """Lazy alias to :class:`.stat.NetworkInfo`."""
         return partial(NetworkInfo, self)
+
+    @property
+    def ris_peers(self) -> Type[RISPeers]:
+        """Lazy alias to :class:`.stat.RISPeers`."""
+        return partial(RISPeers, self)
 
     @property
     def rpki_validation_status(self) -> Type[RPKIValidationStatus]:
