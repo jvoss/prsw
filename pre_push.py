@@ -13,9 +13,9 @@ from subprocess import CalledProcessError, check_call
 def run(program):
     """Runs a program."""
 
-    print(f"Running {program}")
+    print(f"Running: {' '.join(program)}")
     try:
-        check_call(program)
+        check_call(program, shell=False)
     except CalledProcessError:
         print(f"Failed to run {program}")
         return False
@@ -29,16 +29,16 @@ def run(program):
 def run_linters():
     """Runs all linters."""
     success = True
-    success &= run("black --check .")
-    success &= run("flake8 --exclude docs prsw tests")
-    success &= run("pydocstyle prsw")
+    success &= run(["black", "--check", "."])
+    success &= run(["flake8", "--exclude", "docs", "prsw", "tests"])
+    success &= run(["pydocstyle", "prsw"])
     return success
 
 
 def run_unit_tests():
     """Runs all unit tests."""
     success = True
-    success &= run("pytest")
+    success &= run(["pytest"])
     return success
 
 
