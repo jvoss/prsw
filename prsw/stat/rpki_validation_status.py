@@ -19,7 +19,7 @@ class RPKIValidationStatus:
     =================== ===============================================================
     ``prefix``          The prefix this query is based on
     ``resource``        The ASN this query is based on.
-    ``status``          The RPKI validity state, according to RIPE NCC's RPKI validator 
+    ``status``          The RPKI validity state, according to RIPE NCC's RPKI validator
     ``validating_roas`` A list if validating ROAs
     =================== ===============================================================
 
@@ -55,11 +55,11 @@ class RPKIValidationStatus:
     ):
         """
         Initialize and request RPKIValidationStatus.
-        
+
         :param resource: The ASN used to perform the RPKI validity state lookup.
         :param prefix: The prefix to perform the RPKI validity state lookup. Note the
             prefix’s length is also taken from this field.
-        
+
         """
 
         # validate and sanitize prefix (ensure is proper boundary)

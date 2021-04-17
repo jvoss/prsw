@@ -68,7 +68,7 @@ class AnnouncedPrefixes:
         :param endtime: The start time for the query. (defaults to two weeks before
             current date and time)
         :param min_peers_seeing: Minimum number of RIS peers seeing the prefix for
-            it to be included in the results. Excludes low visibility/localized 
+            it to be included in the results. Excludes low visibility/localized
             announcements. (default 10)
 
         .. code-block:: python
@@ -83,7 +83,7 @@ class AnnouncedPrefixes:
                 starttime=start,     # datetime
                 endtime=end,         # datetime
                 min_peers_seeing=20, # int
-                )        
+                )
 
         """
 
@@ -205,5 +205,5 @@ class AnnouncedPrefixes:
 
     @property
     def resource(self):
-        """The resource (Autonomous System number) used for the query."""
-        return self._api.data["resource"]
+        """The resource, autonomous system number, used for the query."""
+        return int(self._api.data["resource"])

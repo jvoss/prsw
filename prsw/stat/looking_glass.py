@@ -24,7 +24,7 @@ class LookingGlass:
     ``latest_time``     Provides **datetime** on how recent this data is.
     ``query_time``      Provides **datetime** on when the query was performed.
     ``peers``           **List** containing all peers from every collector node (RRC)
-    ``rrcs``            **Dict** containing each collector node (RRC) 
+    ``rrcs``            **Dict** containing each collector node (RRC)
     ================    =============================================================
 
     .. code-block:: python
@@ -71,11 +71,11 @@ class LookingGlass:
     def __init__(self, RIPEstat, resource: ipaddress.ip_network):
         """
         Initialize and request prefix from the Looking Glass.
-        
+
         :param resource: A prefix or an IP address. Prefixes need to match exactly a
             prefix found in the routing data. If given as IP address, the data call
             will try to find the encompassing prefix for the IP address.
-        
+
         """
         # validate and sanitize prefix (ensure proper boundary)
         resource = ipaddress.ip_network(str(resource), strict=False)
@@ -211,7 +211,7 @@ class LookingGlass:
         ``prefix``          The matched prefix (**IPv4Network** or **IPv6Network**) based
                             on the query input resource
         ``peer``            **IPv4Address** or **IPv6Address** of the peer interface
-        ``nexthop``         The next hop (**IPv4Address** or **IPv6Address**) from the 
+        ``nexthop``         The next hop (**IPv4Address** or **IPv6Address**) from the
                             perspective of this peer
         ``latest_time``     The **datetime** when this route was last confirmed
         ================    =============================================================
