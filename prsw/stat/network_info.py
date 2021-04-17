@@ -27,7 +27,7 @@ class NetworkInfo:
             # 5511
             # 6453
 
-        reponse.prefix
+        reponse.asns
         # [5511, 6453]
 
         print(response.prefix)
