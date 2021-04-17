@@ -34,7 +34,7 @@ class RPKIValidationStatus:
 
         for roa in result.validating_roas:
             # ROA(
-            #   origin='3333',
+            #   origin=3333,
             #   prefix=IPv4Network('193.0.0.0/21'),
             #   validity='valid',
             #   source='RIPE NCC RPKI Root',
@@ -103,7 +103,21 @@ class RPKIValidationStatus:
 
     @property
     def validating_roas(self):
-        """A list of validating ROAs"""
+        """
+        A list of validating ROAs.
+
+        Returns a **list** of `ROA` named tuples with the following properties:
+
+        =============   ====================================================
+        Property        Description
+        =============   ====================================================
+        ``origin``      **Int** representing the AS
+        ``prefix``      **IPv4Network** or **IPv6Network** of the ROA record
+        ``source``      Source of the ROA
+        ``max_length``  Maximum permitted prefix length **int**
+        ==============  ====================================================
+
+        """
         roas = []
         ROA = namedtuple(
             "ROA", ["origin", "prefix", "validity", "source", "max_length"]
