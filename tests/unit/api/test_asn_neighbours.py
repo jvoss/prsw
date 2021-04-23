@@ -1,6 +1,7 @@
 """Test prsw.stat.asn_neighbours."""
 
 import pytest
+from copy import deepcopy
 from datetime import datetime
 from typing import Iterable
 from unittest.mock import patch
@@ -85,6 +86,9 @@ class TestASNNeighbours(UnitTest):
         with pytest.raises(ValueError):
             ASNNeighbours(mock_get.ripestat, resource="invalid")
 
+        with pytest.raises(ValueError):
+            ASNNeighbours(mock_get.ripestat, resource=5000000000)
+
     def test__init__valid_lod(self, mock_get):
         params = self.params.copy()
         params["lod"] = 0
@@ -108,6 +112,11 @@ class TestASNNeighbours(UnitTest):
         with pytest.raises(ValueError):
             ASNNeighbours(
                 mock_get.ripestat, resource=params["resource"], lod=params["lod"]
+            )
+
+        with pytest.raises(ValueError):
+            ASNNeighbours(
+                mock_get.ripestat, resource=params["resource"], lod=2
             )
 
     def test__init__valid_query_time(self, mock_get):
@@ -145,7 +154,7 @@ class TestASNNeighbours(UnitTest):
         response = ASNNeighbours(mock_get.ripestat, 3333)
         assert len(response) == len(TestASNNeighbours.RESPONSE["data"]["neighbours"])
 
-    def test__objectify_neighbours(self, mock_get):
+    def test__objectify_neighbours_details(self, mock_get):
         response = ASNNeighbours(mock_get.ripestat, 3333)
 
         for neighbour in response:
@@ -163,6 +172,23 @@ class TestASNNeighbours(UnitTest):
                     assert isinstance(path, tuple)  # namedtuple: ASNNeighbourPath
                     assert isinstance(path.paths, tuple)
                     assert isinstance(path.locations, dict)
+
+    def test__objectify_neighbours_no_details(self):
+        url = f"{API_URL}{ASNNeighbours.PATH}data.json?resource=1205&lod=0"
+        NO_DETAILS = deepcopy(TestASNNeighbours.RESPONSE)
+        NO_DETAILS["data"]["neighbours"][0].__delitem__("details")
+
+        with patch.object(self.ripestat, "_get") as mocked_get:
+            mocked_get.return_value = Output(url, **NO_DETAILS)
+            response = ASNNeighbours(self.ripestat, 3333)
+
+            for neighbour in response:
+                assert isinstance(neighbour, tuple)  # namedtuple: ASNNeighbour
+                assert "asn" in neighbour.__dir__()
+                assert "position" in neighbour.__dir__()
+                assert "details" in neighbour.__dir__()
+
+                assert neighbour.details is None
 
     def test_earliest_time(self, mock_get):
         mock_get.params = self.params  # reset params
