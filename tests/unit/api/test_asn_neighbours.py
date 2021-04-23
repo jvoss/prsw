@@ -178,6 +178,12 @@ class TestASNNeighbours(UnitTest):
         latest_time = TestASNNeighbours.RESPONSE["data"]["latest_time"]
         assert response.latest_time == datetime.fromisoformat(latest_time)
 
+    def test_lod(self, mock_get):
+        mock_get.params = self.params  # reset params
+        response = ASNNeighbours(mock_get.ripestat, 1205)
+
+        assert response.lod == int(TestASNNeighbours.RESPONSE["data"]["lod"])
+
     def test_neighbors(self, mock_get):
         mock_get.params = self.params  # reset params
         response = ASNNeighbours(mock_get.ripestat, 1205)
