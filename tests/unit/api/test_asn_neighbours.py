@@ -115,9 +115,7 @@ class TestASNNeighbours(UnitTest):
             )
 
         with pytest.raises(ValueError):
-            ASNNeighbours(
-                mock_get.ripestat, resource=params["resource"], lod=2
-            )
+            ASNNeighbours(mock_get.ripestat, resource=params["resource"], lod=2)
 
     def test__init__valid_query_time(self, mock_get):
         params = self.params.copy()
