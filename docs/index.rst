@@ -19,6 +19,7 @@ access to the `RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
     :maxdepth: 1
     :caption: API
 
+    api/abuse_contact_finder
     api/announced_prefixes
     api/looking_glass
     api/network_info
