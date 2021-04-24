@@ -20,6 +20,7 @@ access to the `RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
     :caption: API
 
     api/announced_prefixes
+    api/asn_neighbours
     api/looking_glass
     api/network_info
     api/ris_peers

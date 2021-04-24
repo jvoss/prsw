@@ -5,6 +5,7 @@ from . import UnitTest
 
 from prsw import RIPEstat
 from prsw.stat.announced_prefixes import AnnouncedPrefixes
+from prsw.stat.asn_neighbours import ASNNeighbours
 from prsw.stat.looking_glass import LookingGlass
 from prsw.stat.network_info import NetworkInfo
 from prsw.stat.ris_peers import RISPeers
@@ -60,6 +61,9 @@ class TestRIPEstat(UnitTest):
 
     def test_announced_prefixes(self):
         assert self.ripestat.announced_prefixes.func == AnnouncedPrefixes
+
+    def test_asn_neighbours(self):
+        assert self.ripestat.asn_neighbours.func == ASNNeighbours
 
     def test_looking_glass(self):
         assert self.ripestat.looking_glass.func == LookingGlass

@@ -5,6 +5,7 @@ from typing import Optional, Type
 
 from .api import get
 from .stat.announced_prefixes import AnnouncedPrefixes
+from .stat.asn_neighbours import ASNNeighbours
 from .stat.looking_glass import LookingGlass
 from .stat.network_info import NetworkInfo
 from .stat.ris_peers import RISPeers
@@ -84,6 +85,11 @@ class RIPEstat:
     def announced_prefixes(self) -> Type[AnnouncedPrefixes]:
         """Lazy alias to :class:`.stat.AnnouncedPrefixes`."""
         return partial(AnnouncedPrefixes, self)
+
+    @property
+    def asn_neighbours(self) -> Type[ASNNeighbours]:
+        """Lazy alias to :class:`.stat.ASNNeighbours`."""
+        return partial(ASNNeighbours, self)
 
     @property
     def looking_glass(self) -> Type[LookingGlass]:
