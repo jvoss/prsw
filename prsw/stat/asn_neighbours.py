@@ -4,6 +4,8 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Optional
 
+from prsw.validators import Validators
+
 
 class ASNNeighbours:
     """
@@ -115,7 +117,7 @@ class ASNNeighbours:
 
         params = {"preferred_version": ASNNeighbours.VERSION, "resource": str(resource)}
 
-        if int(resource) in range(0, 4294967295):
+        if Validators._validate_asn(resource):
             pass
         else:
             raise ValueError("resource must be int between 0 and 4294967295")
@@ -126,7 +128,7 @@ class ASNNeighbours:
             raise ValueError("lod must be 0 or 1")
 
         if query_time:
-            if isinstance(query_time, datetime):
+            if Validators._validate_datetime(query_time):
                 params["query_time"] = query_time.isoformat()
             else:
                 raise ValueError("query_time expected to be datetime")

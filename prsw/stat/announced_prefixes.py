@@ -6,6 +6,8 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Optional
 
+from prsw.validators import Validators
+
 
 class AnnouncedPrefixes:
     """
@@ -93,12 +95,12 @@ class AnnouncedPrefixes:
         }
 
         if starttime:
-            if isinstance(starttime, datetime):
+            if Validators._validate_datetime(starttime):
                 params["starttime"] = starttime.isoformat()
             else:
                 raise ValueError("starttime expected to be datetime")
         if endtime:
-            if isinstance(endtime, datetime):
+            if Validators._validate_datetime(endtime):
                 params["endtime"] = endtime.isoformat()
             else:
                 raise ValueError("endtime expected to be datetime")

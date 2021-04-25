@@ -5,6 +5,8 @@ import ipaddress
 from collections import namedtuple
 from datetime import datetime
 
+from prsw.validators import Validators
+
 
 class LookingGlass:
     """
@@ -78,7 +80,10 @@ class LookingGlass:
 
         """
         # validate and sanitize prefix (ensure proper boundary)
-        resource = ipaddress.ip_network(str(resource), strict=False)
+        if Validators._validate_ip_network(resource):
+            resource = ipaddress.ip_network(str(resource), strict=False)
+        else:
+            raise ValueError("resource must be valid IP address or network")
 
         params = {"preferred_version": LookingGlass.VERSION, "resource": str(resource)}
 

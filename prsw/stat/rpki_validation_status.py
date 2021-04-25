@@ -4,6 +4,8 @@ import ipaddress
 
 from collections import namedtuple
 
+from prsw.validators import Validators
+
 
 class RPKIValidationStatus:
     """
@@ -63,7 +65,10 @@ class RPKIValidationStatus:
         """
 
         # validate and sanitize prefix (ensure is proper boundary)
-        prefix = ipaddress.ip_network(prefix, strict=False)
+        if Validators._validate_ip_network(prefix):
+            prefix = ipaddress.ip_network(prefix, strict=False)
+        else:
+            raise ValueError("prefix must be valid IP network")
 
         params = {
             "preferred_version": RPKIValidationStatus.VERSION,
