@@ -1,6 +1,5 @@
 """Test validations used in API endpoints."""
 
-import pytest
 import datetime
 import ipaddress
 

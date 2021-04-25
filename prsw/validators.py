@@ -26,7 +26,7 @@ class Validators:
 
     def _validate_datetime(datetime_obj) -> bool:
         """Validate object is a datetime."""
-        
+
         if not isinstance(datetime_obj, datetime):
             return False
 
@@ -45,7 +45,7 @@ class Validators:
     def _validate_ip_network(ip: str, strict=False) -> bool:
         """Validate argument is a valid IPv4 or IPv6 network."""
 
-        try: 
+        try:
             ipaddress.ip_network(str(ip), strict=strict)
         except ValueError:
             return False
