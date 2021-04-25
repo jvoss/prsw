@@ -4,6 +4,7 @@ from unittest import mock
 from . import UnitTest
 
 from prsw import RIPEstat
+from prsw.stat.abuse_contact_finder import AbuseContactFinder
 from prsw.stat.announced_prefixes import AnnouncedPrefixes
 from prsw.stat.asn_neighbours import ASNNeighbours
 from prsw.stat.looking_glass import LookingGlass
@@ -58,6 +59,9 @@ class TestRIPEstat(UnitTest):
         ripestat._get("/test")
 
         mock_get.assert_called_with("/test", {"data_overload_limit": "ignore"})
+
+    def test_abuse_contact_finder(self):
+        assert self.ripestat.abuse_contact_finder.func == AbuseContactFinder
 
     def test_announced_prefixes(self):
         assert self.ripestat.announced_prefixes.func == AnnouncedPrefixes
