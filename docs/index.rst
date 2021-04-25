@@ -21,6 +21,7 @@ access to the `RIPEstat Data API API <https://stat.ripe.net/docs/data_api>`_.
 
     api/abuse_contact_finder
     api/announced_prefixes
+    api/asn_neighbours
     api/looking_glass
     api/network_info
     api/ris_peers
