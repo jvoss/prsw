@@ -40,3 +40,6 @@ class TestValidators(UnitTest):
 
         with pytest.raises(ValueError):
             Validators._validate_ip_network("invalid")
+
+        with pytest.raises(ValueError):
+            Validators._validate_ip_network("192.168.0.1/24", strict=True)

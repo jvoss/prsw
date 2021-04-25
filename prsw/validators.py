@@ -25,8 +25,8 @@ class Validators:
         ipaddress.ip_address(str(ip))
         return True
 
-    def _validate_ip_network(ip: str) -> bool:
+    def _validate_ip_network(ip: str, strict=False) -> bool:
         """Validate argument is a valid IPv4 or IPv6 network."""
 
-        ipaddress.ip_network(str(ip), strict=False)
+        ipaddress.ip_network(str(ip), strict=strict)
         return True
