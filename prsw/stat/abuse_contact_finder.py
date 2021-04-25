@@ -102,21 +102,16 @@ class AbuseContactFinder:
         resource = None
 
         # first check if resource is an ASN
-        try:
-            Validators._validate_asn(str(value))
+        if Validators._validate_asn(str(value)):
             resource = int(value)
-        except ValueError:
-            # next check if resource is an IP address
-            try:
-                Validators._validate_ip_address(value)
-                resource = ipaddress.ip_address(value)
-            except ValueError:
-                # lastly check resource is an IP network
-                try:
-                    Validators._validate_ip_network(value)
-                    resource = ipaddress.ip_network(value)
-                except ValueError:
-                    raise ValueError("Expected ASN int or valid IP address or network")
+        # next check if resource is an IP address)
+        elif Validators._validate_ip_address(value):
+            resource = ipaddress.ip_address(value)
+        # last check if resource is an IP network
+        elif Validators._validate_ip_network(value):
+            resource = ipaddress.ip_network(value)
+        else:
+            raise ValueError("Expected ASN int or valid IP address or network")
 
         return resource
 

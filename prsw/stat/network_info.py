@@ -2,6 +2,8 @@
 
 import ipaddress
 
+from prsw.validators import Validators
+
 
 class NetworkInfo:
     """
@@ -48,7 +50,10 @@ class NetworkInfo:
         :param resource: Any IP address one wants to get network info for
         """
         # validate resource as valid IP address
-        resource = ipaddress.ip_address(str(resource))
+        if Validators._validate_ip_address(resource):
+            resource = ipaddress.ip_address(str(resource))
+        else:
+            raise ValueError("resource must be a valid IP address")
 
         params = {"preferred_version": NetworkInfo.VERSION, "resource": str(resource)}
 

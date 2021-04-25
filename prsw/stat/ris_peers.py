@@ -6,6 +6,8 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Optional
 
+from prsw.validators import Validators
+
 
 class RISPeers:
     """
@@ -68,7 +70,7 @@ class RISPeers:
         params = {"preferred_version": RISPeers.VERSION}
 
         if query_time:
-            if isinstance(query_time, datetime):
+            if Validators._validate_datetime(query_time):
                 params["query_time"] = query_time.isoformat()
             else:
                 raise ValueError("query_time expect to be datetime")
