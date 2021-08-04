@@ -20,6 +20,7 @@ class Output:
         see_also: Optional[list] = [],
         version: Optional[str] = "",
         data_call_status: Optional[str] = "",
+        data_call_name: Optional[str] = "",
         cached: Optional[bool] = None,
         data=None,
         query_id: Optional[str] = "",
@@ -38,6 +39,7 @@ class Output:
             self.see_also = see_also
             self.version = str(version)
             self.data_call_status = str(data_call_status)
+            self.data_call_name = str(data_call_name)
             self.cached = bool(cached)
             self.data = data
             self.query_id = str(query_id)
