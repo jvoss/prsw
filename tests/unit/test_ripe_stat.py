@@ -10,6 +10,7 @@ from prsw.stat.asn_neighbours import ASNNeighbours
 from prsw.stat.looking_glass import LookingGlass
 from prsw.stat.network_info import NetworkInfo
 from prsw.stat.ris_peers import RISPeers
+from prsw.stat.routing_history import RoutingHistory
 from prsw.stat.rpki_validation_status import RPKIValidationStatus
 from prsw.stat.whats_my_ip import WhatsMyIp
 
@@ -65,6 +66,9 @@ class TestRIPEstat(UnitTest):
 
     def test_announced_prefixes(self):
         assert self.ripestat.announced_prefixes.func == AnnouncedPrefixes
+
+    def test_routing_history(self):
+        assert self.ripestat.routing_history.func == RoutingHistory
 
     def test_asn_neighbours(self):
         assert self.ripestat.asn_neighbours.func == ASNNeighbours
