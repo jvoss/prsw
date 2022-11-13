@@ -10,6 +10,8 @@ _build/
 __pycache__/
 build/
 dist/
+.DS_Store
+.vscode
 
 # common venv idioms
 .venv/
