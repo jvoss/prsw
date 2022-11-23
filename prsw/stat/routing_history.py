@@ -199,4 +199,7 @@ class RoutingHistory:
     @property
     def resource(self):
         """The resource, autonomous system number, used for the query."""
-        return int(self._api.data["resource"])
+        try:
+            return int(self._api.data["resource"])
+        except:
+            return self._api.data["resource"]
