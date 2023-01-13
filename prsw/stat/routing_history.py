@@ -72,7 +72,10 @@ class RoutingHistory:
             at the time. (default: false)
         .. code-block:: python
 
+            import prsw
             from datetime import datetime
+
+            ripe = prsw.RIPEstat()
 
             start = datetime.fromisoformat("2021-01-01T12:00:00.000000")
             end = datetime.now()
@@ -81,7 +84,7 @@ class RoutingHistory:
                 3333,                # Autonomous System Number
                 starttime=start,     # datetime
                 endtime=end,         # datetime
-                min_peers_seeing=20, # int
+                min_peers=20         # int
                 )
 
         """
