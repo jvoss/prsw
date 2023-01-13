@@ -11,63 +11,81 @@ jobs:
     needs: test-multi-python
     runs-on: ubuntu-latest
     steps:
-    - uses: coverallsapp/github-action@57daa114ba54fd8e1c8563e8027325c0bf2f5e80
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel-finished: true
+
   test-multi-os:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: 3.x
-    - uses: actions/cache@v1
-      with:
-        key: v0-${{ runner.os }}-pip-test-${{ hashFiles('setup.py') }}
-        path: ~/.cache/pip
-        restore-keys: |
-          v0-${{ runner.os }}-pip-test-
-          v0-${{ runner.os }}-pip-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install .[test]
-    - name: Test with pytest
-      run: pytest
     strategy:
       matrix:
         os: [macOS-latest, ubuntu-latest, windows-latest]
-  test-multi-python:
-    name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
-    - uses: actions/cache@v1
+        python-version: 3.x
+
+    - uses: actions/cache@v3
       with:
         key: v0-${{ runner.os }}-pip-test-${{ hashFiles('setup.py') }}
         path: ~/.cache/pip
         restore-keys: |
           v0-${{ runner.os }}-pip-test-
           v0-${{ runner.os }}-pip-
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install .[test]
-        pip install https://github.com/bboe/coveralls-python/archive/github_actions.zip
+
     - name: Test with pytest
-      run: coverage run --source prsw --module pytest
-    - env:
-        COVERALLS_PARALLEL: true
-        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      name: Submit to coveralls
-      run: coveralls
-    - name: Check coverage
-      run: coverage report -m --fail-under=100
+      run: pytest
+
+  test-multi-python:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - uses: actions/cache@v3
+      with:
+        key: v0-${{ runner.os }}-pip-test-${{ hashFiles('setup.py') }}
+        path: ~/.cache/pip
+        restore-keys: |
+          v0-${{ runner.os }}-pip-test-
+          v0-${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[test]
+        pip install coveralls
+
+    - name: Test with pytest
+      run: coverage run --source prsw --module pytest
+
+    - name: Generate Coveralls LCOV report
+      run: coverage lcov
+
+    - name: Coveralls Parallel
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: run-${{ matrix.python-version }}
+        path-to-lcov: ./coverage.lcov
+        parallel: true
+
+    - name: Check coverage
+      run: coverage report -m --fail-under=100
