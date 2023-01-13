@@ -4,8 +4,10 @@
 *.pyc
 .cache/
 .coverage
+.DS_Store
 .pytest_cache/
 .tox/
+.vscode
 _build/
 __pycache__/
 build/
