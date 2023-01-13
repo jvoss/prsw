@@ -29,7 +29,7 @@ extras["dev"] += extras["lint"] + extras["test"]
 setup(
     name=PACKAGE_NAME,
     author="Jonathan P. Voss",
-    author_email="jonathan@expbits.io",
+    author_email="jvoss@onvox.net",
     python_requires="~=3.7",
     classifiers=[
         "Environment :: Console",
