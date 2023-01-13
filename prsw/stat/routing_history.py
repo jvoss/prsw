@@ -18,7 +18,7 @@ class RoutingHistory:
     =================== ===============================================================
     Property            Description
     =================== ===============================================================
-    ``by_origin`` A list containing routes grouped by origin.
+    ``by_origin``       A list containing routes grouped by origin.
     ``query_endtime``   The **datetime** at which the query ended.
     ``query_starttime`` The **datetime** at which the query started.
     ``resource``        The resource used for the query / prefix or ASN
@@ -70,6 +70,7 @@ class RoutingHistory:
             visibility of the route (according to RIS) at that point in time. The visibility is
             computed as the peers_seeing divided by the number of RIS full table peers
             at the time. (default: false)
+
         .. code-block:: python
 
             import prsw
