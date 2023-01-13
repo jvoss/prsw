@@ -15,58 +15,27 @@ class TestAbuseContactFinder(UnitTest):
     RESPONSE = {
         "messages": [],
         "see_also": [],
-        "version": "1.2",
-        "data_call_status": "supported - connecting to flow",
+        "version": "2.1",
+        "data_call_name": "abuse-contact-finder",
+        "data_call_status": "supported",
         "cached": False,
         "data": {
-            "query_time": "2021-04-23T16:11:00",
-            "resource": "3333",
-            "authorities": ["ripe"],
-            "blocklist_info": [],
-            "global_network_info": {
-                "description": "Assigned by RIPE NCC",
-                "source": "IANA 16-bit Autonomous System (AS) Numbers Registry",
-                "source_url": "http://www.iana.org/assignments/as-numbers/as-numbers-1.csv",
-                "name": "Assigned by RIPE NCC",
-            },
-            "anti_abuse_contacts": {
-                "emails": [],
-                "objects_with_remarks": [],
-                "extracted_emails": [],
-                "abuse_c": [
-                    {
-                        "description": "abuse-c",
-                        "email": "abuse@ripe.net",
-                        "key": "OPS4-RIPE",
-                    }
-                ],
-            },
-            "holder_info": {
-                "name": "RIPE-NCC-AS - Reseaux IP Europeens Network Coordination Centre (RIPE NCC)",
-                "resource": "3333",
-            },
-            "special_resources": [],
-            "more_specifics": [
-                "193.0.18.0-193.0.21.255",
-                "193.0.0.0-193.0.23.255",
-                "193.0.0.0/16",
-            ],
-            "less_specifics": [
-                "193.0.0.0-193.0.255.255",
-                "193.0.0.0-193.0.50.255",
-                "193.0.0.0/12",
-            ],
+            "abuse_contacts": ["abuse@ripe.net"],
+            "authoritative_rir": "ripe",
+            "latest_time": "2023-01-13T17:04:58",
+            "earliest_time": "2023-01-13T17:04:58",
+            "parameters": {"resource": "3333", "cache": "null"},
         },
-        "query_id": "20210423161144-195e9d63-d139-4fab-a8e3-76f2cf41fcs7",
-        "process_time": 363,
-        "server_id": "app130",
-        "build_version": "live.2021.4.19.159",
+        "query_id": "20230113170458-070f3b71-4274-4878-ae2a-f38b0162ded6",
+        "process_time": 38,
+        "server_id": "app129",
+        "build_version": "live.2022.12.15.141",
         "status": "ok",
         "status_code": 200,
-        "time": "2021-04-23T15:11:42.851891",
+        "time": "2023-01-13T17:04:58.660821",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{AbuseContactFinder.PATH}data.json?resource=3333"
 
         self.api_response = Output(url, **TestAbuseContactFinder.RESPONSE)
@@ -79,7 +48,7 @@ class TestAbuseContactFinder(UnitTest):
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response
@@ -151,74 +120,29 @@ class TestAbuseContactFinder(UnitTest):
             with pytest.raises(ValueError):
                 AbuseContactFinder(mock_get.ripestat, resource)
 
-    def test_anti_abuse_contacts(self, mock_get):
+    def test_abuse_contacts(self, mock_get):
         mock_get.params = self.params  # reset params
 
         response = AbuseContactFinder(mock_get.ripestat, 3333)
-        assert isinstance(response.anti_abuse_contacts, tuple)  # namedtuple
-        assert "abuse_c" in response.anti_abuse_contacts.__dir__()
-        assert "emails" in response.anti_abuse_contacts.__dir__()
-        assert "objects_with_remarks" in response.anti_abuse_contacts.__dir__()
-        assert "extracted_emails" in response.anti_abuse_contacts.__dir__()
+        assert response.abuse_contacts == self.RESPONSE["data"]["abuse_contacts"]
 
-        expected_abuse_c = self.RESPONSE["data"]["anti_abuse_contacts"]["abuse_c"]
-        assert response.anti_abuse_contacts.abuse_c == expected_abuse_c
-
-    def test_authorities(self, mock_get):
+    def test_authoritative_rir(self, mock_get):
         mock_get.params = self.params  # reset params
 
         response = AbuseContactFinder(mock_get.ripestat, 3333)
-        assert isinstance(response.authorities, list)
-        assert response.authorities == self.RESPONSE["data"]["authorities"]
+        assert response.authoritative_rir == self.RESPONSE["data"]["authoritative_rir"]
 
-    def test_blocklist_info(self, mock_get):
-        mock_get.params = self.params  # reset params
-
-        response = AbuseContactFinder(mock_get.ripestat, 3333)
-        assert isinstance(response.blocklist_info, list)
-        assert response.blocklist_info == self.RESPONSE["data"]["blocklist_info"]
-
-    def test_global_network_info(self, mock_get):
-        mock_get.params = self.params  # reset params
-
-        response = AbuseContactFinder(mock_get.ripestat, 3333)
-        assert isinstance(response.global_network_info, tuple)  # namedtuple
-
-        properties = ["description", "name", "source", "source_url"]
-        for property in properties:
-            assert property in response.global_network_info.__dir__()
-
-    def test_holder_info(self, mock_get):
-        mock_get.params = self.params  # reset params
-
-        response = AbuseContactFinder(mock_get.ripestat, 3333)
-        assert isinstance(response.holder_info, tuple)  # namedtuple
-        assert "name" in response.holder_info.__dir__()
-        assert "resource" in response.holder_info.__dir__()
-
-        expected_name = self.RESPONSE["data"]["holder_info"]["name"]
-        expected_resource = self.RESPONSE["data"]["holder_info"]["resource"]
-
-        assert response.holder_info.name == expected_name
-        assert response.holder_info.resource == expected_resource
-
-    def test_less_specific(self, mock_get):
+    def test_earliest_time(self, mock_get):
         response = AbuseContactFinder(mock_get.ripestat, 3333)
 
-        assert isinstance(response.more_specifics, list)
-        assert response.less_specifics == self.RESPONSE["data"]["less_specifics"]
+        time = TestAbuseContactFinder.RESPONSE["data"]["earliest_time"]
+        assert response.earliest_time == datetime.fromisoformat(time)
 
-    def test_more_specific(self, mock_get):
+    def test_latest_time(self, mock_get):
         response = AbuseContactFinder(mock_get.ripestat, 3333)
 
-        assert isinstance(response.more_specifics, list)
-        assert response.more_specifics == self.RESPONSE["data"]["more_specifics"]
-
-    def test_query_time(self, mock_get):
-        response = AbuseContactFinder(mock_get.ripestat, 3333)
-
-        time = TestAbuseContactFinder.RESPONSE["data"]["query_time"]
-        assert response.query_time == datetime.fromisoformat(time)
+        time = TestAbuseContactFinder.RESPONSE["data"]["latest_time"]
+        assert response.latest_time == datetime.fromisoformat(time)
 
     def test_resource_asn(self, mock_get):
         mock_get.params = self.params  # reset params
@@ -232,7 +156,7 @@ class TestAbuseContactFinder(UnitTest):
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             api_response = self.api_response
-            api_response.data["resource"] = str(ipv4_address)
+            api_response.data["parameters"]["resource"] = str(ipv4_address)
             mocked_get.return_value = api_response
 
             params = self.params.copy()
@@ -250,7 +174,7 @@ class TestAbuseContactFinder(UnitTest):
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             api_response = self.api_response
-            api_response.data["resource"] = str(ipv4_network)
+            api_response.data["parameters"]["resource"] = str(ipv4_network)
             mocked_get.return_value = api_response
 
             params = self.params.copy()
@@ -268,7 +192,7 @@ class TestAbuseContactFinder(UnitTest):
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             api_response = self.api_response
-            api_response.data["resource"] = str(ipv6_address)
+            api_response.data["parameters"]["resource"] = str(ipv6_address)
             mocked_get.return_value = api_response
 
             params = self.params.copy()
@@ -286,7 +210,7 @@ class TestAbuseContactFinder(UnitTest):
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             api_response = self.api_response
-            api_response.data["resource"] = str(ipv6_network)
+            api_response.data["parameters"]["resource"] = str(ipv6_network)
             mocked_get.return_value = api_response
 
             params = self.params.copy()
@@ -298,10 +222,3 @@ class TestAbuseContactFinder(UnitTest):
             assert response.resource == ipv6_network
 
             mocked_get.assert_called_with(AbuseContactFinder.PATH, params)
-
-    def test_special_resources(self, mock_get):
-        mock_get.params = self.params  # reset params
-
-        response = AbuseContactFinder(mock_get.ripestat, 3333)
-        assert isinstance(response.special_resources, list)
-        assert response.special_resources == self.RESPONSE["data"]["special_resources"]
