@@ -11,4 +11,4 @@ https://stat.ripe.net/docs/data_api
 
 from .ripe_stat import RIPEstat
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
