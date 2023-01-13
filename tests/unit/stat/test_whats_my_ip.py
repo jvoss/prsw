@@ -27,17 +27,17 @@ class TestWhatsMyIp(UnitTest):
         "time": "2021-04-16T01:39:15.228803",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{WhatsMyIp.PATH}data.json?"
 
         self.api_response = Output(url, **TestWhatsMyIp.RESPONSE)
         self.params = {"preferred_version": WhatsMyIp.VERSION}
 
-        super().setup()
+        super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response

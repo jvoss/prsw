@@ -55,7 +55,7 @@ class TestASNNeighbours(UnitTest):
         "time": "2021-04-22T20:04:40.611329",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{ASNNeighbours.PATH}data.json?resource=1205"
 
         self.api_response = Output(url, **TestASNNeighbours.RESPONSE)
@@ -65,11 +65,11 @@ class TestASNNeighbours(UnitTest):
             "lod": "0",
         }
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response

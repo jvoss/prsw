@@ -44,7 +44,7 @@ class TestAbuseContactFinder(UnitTest):
             "resource": "3333",
         }
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
