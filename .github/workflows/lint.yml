@@ -11,11 +11,11 @@ jobs:
     name: black
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
           path: ~/.cache/pip
@@ -33,11 +33,11 @@ jobs:
     name: flake8
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
           path: ~/.cache/pip
@@ -55,11 +55,11 @@ jobs:
     name: pydocstyle
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
           path: ~/.cache/pip
@@ -77,11 +77,11 @@ jobs:
     name: sphinx
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           key: v0-${{ runner.os }}-pip-lint-${{ hashFiles('setup.py') }}
           path: ~/.cache/pip
