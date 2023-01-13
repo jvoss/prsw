@@ -66,7 +66,7 @@ class TestAnnouncedPrefixes(UnitTest):
         },
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{AnnouncedPrefixes.PATH}data.json?resource=3333"
 
         self.api_response = Output(url, **TestAnnouncedPrefixes.RESPONSE)
@@ -75,11 +75,11 @@ class TestAnnouncedPrefixes(UnitTest):
             "resource": "3333",
         }
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response

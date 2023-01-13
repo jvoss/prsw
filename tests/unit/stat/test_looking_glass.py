@@ -51,7 +51,7 @@ class TestLookingGlass(UnitTest):
         "time": "2021-04-15T12:45:22.211516",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{LookingGlass.PATH}data.json?resource=140.78.0.0/16"
 
         self.api_response = Output(url, **TestLookingGlass.RESPONSE)
@@ -60,11 +60,11 @@ class TestLookingGlass(UnitTest):
             "resource": "140.78.0.0/16",
         }
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response

@@ -48,17 +48,17 @@ class TestRISPeers(UnitTest):
         "time": "2021-04-17T17:14:36.207593",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{RISPeers.PATH}data.json?"
 
         self.api_response = Output(url, **TestRISPeers.RESPONSE)
         self.params = {"preferred_version": RISPeers.VERSION}
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response

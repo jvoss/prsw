@@ -103,17 +103,17 @@ class TestRoutingHistory(UnitTest):
         "time": "2022-11-13T21:45:59.821830",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{RoutingHistory.PATH}data.json?resource=3333"
 
         self.api_response = Output(url, **TestRoutingHistory.RESPONSE)
         self.params = {"preferred_version": RoutingHistory.VERSION, "resource": "3333"}
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response

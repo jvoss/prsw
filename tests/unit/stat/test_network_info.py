@@ -28,17 +28,17 @@ class TestNetworkInfo(UnitTest):
         "time": "2021-04-16T15:31:09.830045",
     }
 
-    def setup(self):
+    def setup_method(self):
         url = f"{API_URL}{NetworkInfo.PATH}data.json?resource=41.138.32.10"
 
         self.api_response = Output(url, **TestNetworkInfo.RESPONSE)
         self.params = {"preferred_version": NetworkInfo.VERSION}
 
-        return super().setup()
+        return super().setup_method()
 
     @pytest.fixture(scope="session")
     def mock_get(self):
-        self.setup()
+        self.setup_method()
 
         with patch.object(self.ripestat, "_get") as mocked_get:
             mocked_get.return_value = self.api_response
