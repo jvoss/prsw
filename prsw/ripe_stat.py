@@ -5,6 +5,7 @@ from typing import Optional, Type
 
 from .api import get
 from .stat.abuse_contact_finder import AbuseContactFinder
+from .stat.address_space_hierarchy import AddressSpaceHierarchy
 from .stat.announced_prefixes import AnnouncedPrefixes
 from .stat.asn_neighbours import ASNNeighbours
 from .stat.looking_glass import LookingGlass
@@ -87,6 +88,11 @@ class RIPEstat:
     def abuse_contact_finder(self) -> Type[AbuseContactFinder]:
         """Lazy alias to :class:`.stat.AbuseContactFinder`."""
         return partial(AbuseContactFinder, self)
+    
+    @property
+    def address_space_hierarchy(self) -> Type[AddressSpaceHierarchy]:
+        """Lazy alias to :class:`.stat.AddressSpaceHierarchy`."""
+        return partial(AddressSpaceHierarchy, self)
 
     @property
     def announced_prefixes(self) -> Type[AnnouncedPrefixes]:
