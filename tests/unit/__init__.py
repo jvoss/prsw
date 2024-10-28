@@ -1,4 +1,5 @@
 """PRSW Unit test suite."""
+
 from prsw import RIPEstat
 
 
