@@ -38,7 +38,7 @@ class TestAddressSpaceHierarchy(UnitTest):
                     "mnt-by": "RIPE-NCC-MNT",
                     "created": "2003-03-17T12:15:57Z",
                     "last-modified": "2017-12-04T14:42:31Z",
-                    "source": "RIPE"
+                    "source": "RIPE",
                 }
             ],
             "less_specific": [
@@ -55,15 +55,12 @@ class TestAddressSpaceHierarchy(UnitTest):
                     "mnt-routes": "RIPE-NCC-MNT, RIPE-GII-MNT { 193.0.8.0/23 }",
                     "created": "2012-03-09T15:03:38Z",
                     "last-modified": "2024-07-24T15:35:02Z",
-                    "source": "RIPE"
+                    "source": "RIPE",
                 }
             ],
             "more_specific": [],
             "query_time": "2024-10-10T14:42:39",
-            "parameters": {
-                "resource": "193.0.0.0/21",
-                "cache": None
-            }
+            "parameters": {"resource": "193.0.0.0/21", "cache": None},
         },
         "query_id": "20241010144239-e4fea150-ac7e-4ad4-94e3-1207a9c00f73",
         "process_time": 60,
@@ -71,9 +68,8 @@ class TestAddressSpaceHierarchy(UnitTest):
         "build_version": "live.2024.9.25.217",
         "status": "ok",
         "status_code": 200,
-        "time": "2024-10-10T14:42:39.989690"
+        "time": "2024-10-10T14:42:39.989690",
     }
-
 
     def setup_method(self):
         url = f"{API_URL}{AddressSpaceHierarchy.PATH}data.json?resource=193.0.0.0/21"
@@ -115,24 +111,21 @@ class TestAddressSpaceHierarchy(UnitTest):
 
     def test_exact_inetnums(self, mock_get):
         response = AddressSpaceHierarchy(
-            mock_get.ripestat,
-            resource=self.params["resource"]
+            mock_get.ripestat, resource=self.params["resource"]
         )
 
         assert isinstance(response.exact_inetnums, Iterable)
 
     def test_more_specific_inetnums(self, mock_get):
         response = AddressSpaceHierarchy(
-            mock_get.ripestat,
-            resource=self.params["resource"]
+            mock_get.ripestat, resource=self.params["resource"]
         )
 
         assert isinstance(response.more_specific_inetnums, Iterable)
 
     def test_less_specific_inetnums(self, mock_get):
         response = AddressSpaceHierarchy(
-            mock_get.ripestat,
-            resource=self.params["resource"]
+            mock_get.ripestat, resource=self.params["resource"]
         )
 
         assert isinstance(response.less_specific_inetnums, Iterable)
@@ -143,5 +136,3 @@ class TestAddressSpaceHierarchy(UnitTest):
 
         query_time = self.RESPONSE["data"]["query_time"]
         assert response.query_time == datetime.fromisoformat(query_time)
-
-

@@ -88,7 +88,7 @@ class RIPEstat:
     def abuse_contact_finder(self) -> Type[AbuseContactFinder]:
         """Lazy alias to :class:`.stat.AbuseContactFinder`."""
         return partial(AbuseContactFinder, self)
-    
+
     @property
     def address_space_hierarchy(self) -> Type[AddressSpaceHierarchy]:
         """Lazy alias to :class:`.stat.AddressSpaceHierarchy`."""

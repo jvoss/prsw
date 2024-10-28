@@ -1,5 +1,4 @@
 """Provides the Address Space Hierarchy endpoint."""
-from collections import namedtuple
 
 import ipaddress
 from datetime import datetime
@@ -55,7 +54,7 @@ class AddressSpaceHierarchy:
 
         params = {
             "preferred_version": AddressSpaceHierarchy.VERSION,
-            "resource": str(resource)
+            "resource": str(resource),
         }
 
         self._api = RIPEstat._get(AddressSpaceHierarchy.PATH, params)
@@ -103,7 +102,7 @@ class AddressSpaceHierarchy:
     @property
     def less_specific_inetnums(self):
         """
-        Returns a list containing first level less specific (parent) blocks 
+        Returns a list containing first level less specific (parent) blocks
         above the queried resource.
 
         .. code-block:: python
@@ -124,7 +123,4 @@ class AddressSpaceHierarchy:
     @property
     def query_time(self):
         """**datetime** of used by query."""
-        return datetime.fromisoformat(
-            self._api.data["query_time"]
-        )
-
+        return datetime.fromisoformat(self._api.data["query_time"])
