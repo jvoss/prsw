@@ -94,11 +94,12 @@ class TestAddressSpaceHierarchy(UnitTest):
             mocked_get.assert_called_with(AddressSpaceHierarchy.PATH, self.params)
 
     def test__init__valid_resource(self, mock_get):
-        response = AddressSpaceHierarchy(
-            mock_get.ripestat, resource=self.params["resource"]
-        )
-
+        response = AddressSpaceHierarchy(mock_get.ripestat, "193.0.0.0/21")
         assert isinstance(response, AddressSpaceHierarchy)
+
+    def test__init__invalid_resource(self):
+        with pytest.raises(ValueError):
+            AddressSpaceHierarchy(self.ripestat, resource="invalid")
 
     def test_resource(self, mock_get):
         response = AddressSpaceHierarchy(
@@ -129,6 +130,13 @@ class TestAddressSpaceHierarchy(UnitTest):
         )
 
         assert isinstance(response.less_specific_inetnums, Iterable)
+
+    def test_rir(self, mock_get):
+        response = AddressSpaceHierarchy(
+            mock_get.ripestat, resource=self.params["resource"]
+        )
+
+        assert isinstance(response.rir, str)
 
     def test_query_time(self, mock_get):
         response = AddressSpaceHierarchy(mock_get.ripestat, "193.0.0.0/21")
