@@ -25,7 +25,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pydocstyle>=6.3.0",
-    "pytest>=8.3.5",
+    "pytest>=9.0.3",
     "pytest-cov>=5.0.0",
     "ruff>=0.15.8",
     "sphinx>=7.1.2",
